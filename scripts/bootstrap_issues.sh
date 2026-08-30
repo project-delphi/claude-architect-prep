@@ -198,7 +198,7 @@ create_issue \
 - [ ] Local MCP server exposing 3–4 tools with strict schemas (\`additionalProperties: false\`, complete \`required\`).
 - [ ] Structured errors on every failure path: \`errorCategory\` (transient/validation/permission/business), \`isRetryable\`, human-readable message. No generic \"Operation failed\".
 - [ ] **Access failure** (timeout) distinguished from **valid empty result** (query succeeded, no matches).
-- [ ] Registered in project-scoped \`.mcp.json\` with \`${VAR}\` expansion — no committed secrets.
+- [ ] Registered in project-scoped \`.mcp.json\` with \`\${VAR}\` expansion — no committed secrets.
 - [ ] A personal server in \`~/.claude.json\`; confirm both are available simultaneously.
 - [ ] At least one MCP **resource** exposing a content catalogue to cut exploratory calls.
 
