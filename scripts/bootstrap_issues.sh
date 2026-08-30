@@ -59,6 +59,15 @@ declare -a MILESTONES=(
   "2026-09-12|Day 13 - Mock exam"
 )
 
+# The three open slack days only get milestones when gap issues are filed.
+if [[ $WITH_GAPS -eq 1 ]]; then
+  MILESTONES+=(
+    "2026-09-07|Day 8 - Domain 1 gaps"
+    "2026-09-09|Day 10 - Domain 3 gaps"
+    "2026-09-11|Day 12 - Domain 5 gaps"
+  )
+fi
+
 echo "Milestones:"
 for entry in "${MILESTONES[@]}"; do
   date="${entry%%|*}"
@@ -83,18 +92,24 @@ milestone_for() {  # date -> title
 # --------------------------------------------------------------------------
 # Issues
 # --------------------------------------------------------------------------
-create_issue() {  # title, label, due-date, body
-  local title="$1" label="$2" due="$3" body="$4"
-  if gh issue list --state all --search "\"$title\" in:title" \
-       --json title -q '.[].title' | grep -Fxq "$title"; then
+# Existing titles are listed once and matched locally. GitHub's issue *search*
+# index lags creation by up to a minute, so a search-based check would
+# re-create an issue filed moments earlier.
+EXISTING_TITLES="$(gh issue list --state all --limit 300 --json title -q '.[].title')"
+
+create_issue() {  # title, labels (comma-separated), due-date, body
+  local title="$1" labels="$2" due="$3" body="$4"
+  if grep -Fxq "$title" <<<"$EXISTING_TITLES"; then
     echo "  issue = $title"
     return
   fi
   gh issue create \
     --title "$title" \
-    --label "$label" \
+    --label "$labels" \
     --milestone "$(milestone_for "$due")" \
     --body "$body" >/dev/null
+  EXISTING_TITLES="$EXISTING_TITLES
+$title"
   echo "  issue + $title"
 }
 
@@ -313,54 +328,81 @@ Close with the scored results and remediation plan committed."
 # --------------------------------------------------------------------------
 if [[ $WITH_GAPS -eq 1 ]]; then
   echo "Gap issues:"
+
   create_issue \
     "Apply Agent SDK hooks for tool interception and data normalization" \
-    "domain-1-agentic" "2026-09-01" \
-"**Domain:** 1 (27%) · **Task statement:** 1.5 · **Coverage gap**
-Suggested: sprint day 8 (2026-09-07).
+    "domain-1-agentic,coverage-gap" "2026-09-07" \
+"**Domain:** 1 — Agentic Architecture & Orchestration (27%)
+**Task statement:** 1.5 — *no dedicated issue in the original 10*
+**Due:** 2026-09-07 · Sprint day 8
+**Directory:** \`01-agentic-loops/\`
 
-- [ ] \`PostToolUse\` hook normalising heterogeneous formats (Unix epoch vs ISO 8601 vs numeric status codes) before the model sees them.
-- [ ] Interception hook blocking a policy-violating call (e.g. refunds over \$500) and redirecting to escalation.
-- [ ] Article the case for hooks over prompt instructions where compliance must be **deterministic** — prompts have a non-zero failure rate."
-  gh issue edit "$(gh issue list --search 'Agent SDK hooks in:title' --json number -q '.[0].number')" --add-label "coverage-gap" >/dev/null 2>&1 || true
+Domain 1 is the heaviest on the exam and had 4 of its 7 task statements
+uncovered. This is one of them.
+
+### Acceptance
+- [ ] A \`PostToolUse\` hook normalising heterogeneous formats — Unix epoch vs ISO 8601 vs numeric status codes — *before* the model sees the result.
+- [ ] An interception hook on outgoing calls that blocks a policy violation (e.g. refunds over \$500) and redirects to escalation.
+- [ ] Write up why hooks beat prompt instructions where compliance must be **deterministic**: prompt-based rules have a non-zero failure rate, which is unacceptable once money moves.
+- [ ] Relate to Sample Q1 — a programmatic prerequisite blocking \`process_refund\` until \`get_customer\` has returned a verified id beats any system-prompt wording.
+
+### Evidence
+Close with a link to the commit."
 
   create_issue \
     "Manage session state: resumption, forking, and stale context" \
-    "domain-1-agentic" "2026-09-05" \
-"**Domain:** 1 (27%) · **Task statement:** 1.7 · **Coverage gap**
-Suggested: sprint day 8 (2026-09-07).
+    "domain-1-agentic,coverage-gap" "2026-09-07" \
+"**Domain:** 1 — Agentic Architecture & Orchestration (27%)
+**Task statement:** 1.7 — *no dedicated issue in the original 10*
+**Due:** 2026-09-07 · Sprint day 8
+**Directory:** \`01-agentic-loops/\`
 
-- [ ] \`--resume <session-name>\` to continue a named investigation.
-- [ ] \`fork_session\` for divergent branches from a shared baseline.
-- [ ] Decide between resuming (prior context mostly valid) and starting fresh with an injected summary (tool results stale).
-- [ ] Inform a resumed session about specific file changes for targeted re-analysis."
-  gh issue edit "$(gh issue list --search 'session state in:title' --json number -q '.[0].number')" --add-label "coverage-gap" >/dev/null 2>&1 || true
+### Acceptance
+- [ ] Use \`--resume <session-name>\` to continue a named investigation across work sessions.
+- [ ] Use \`fork_session\` to branch from a shared analysis baseline — e.g. compare two refactoring strategies without re-exploring.
+- [ ] Articulate the choice: resume when prior context is mostly valid; start fresh with an injected structured summary when prior tool results are **stale**.
+- [ ] On resume after code changes, inform the session which specific files changed for targeted re-analysis rather than full re-exploration.
+
+### Evidence
+Close with a link to the commit."
 
   create_issue \
     "Determine when to use plan mode vs direct execution" \
-    "domain-3-claude-code" "2026-09-08" \
-"**Domain:** 3 (20%) · **Task statement:** 3.4 · **Coverage gap**
-Suggested: sprint day 10 (2026-09-09).
+    "domain-3-claude-code,coverage-gap" "2026-09-09" \
+"**Domain:** 3 — Claude Code Configuration & Workflows (20%)
+**Task statement:** 3.4 — *no dedicated issue in the original 10*
+**Due:** 2026-09-09 · Sprint day 10
+**Directory:** \`03-claude-code/\`
 
-- [ ] Run the same task in both modes; record where plan mode paid for itself and where it was overhead.
-- [ ] Plan mode on an architectural task (Sample Q5: monolith → microservices).
-- [ ] Direct execution on a single-file fix with a clear stack trace.
-- [ ] Use the Explore subagent to isolate verbose discovery.
-- [ ] Combine: plan the investigation, then execute directly."
-  gh issue edit "$(gh issue list --search 'plan mode in:title' --json number -q '.[0].number')" --add-label "coverage-gap" >/dev/null 2>&1 || true
+### Acceptance
+- [ ] Run the same task both ways; record where plan mode paid for itself and where it was pure overhead.
+- [ ] Plan mode on a task with architectural implications (Sample Q5: monolith → microservices, or a migration touching 45+ files).
+- [ ] Direct execution on a well-scoped change with a clear stack trace.
+- [ ] Use the Explore subagent to isolate verbose discovery and prevent context exhaustion.
+- [ ] Combine the two: plan the investigation, then execute the planned approach directly.
+
+### Evidence
+Close with a link to the write-up."
 
   create_issue \
     "Preserve provenance and handle conflicting sources in synthesis" \
-    "domain-5-context" "2026-09-10" \
-"**Domain:** 5 (15%) · **Task statement:** 5.6 · **Coverage gap**
-Suggested: sprint day 12 (2026-09-11).
+    "domain-5-context,coverage-gap" "2026-09-11" \
+"**Domain:** 5 — Context Management & Reliability (15%)
+**Task statement:** 5.6 — *no dedicated issue in the original 10*
+**Due:** 2026-09-11 · Sprint day 12
+**Directory:** \`05-context-reliability/\`
 
-- [ ] Structured claim→source mappings (URL, document name, excerpt) preserved through synthesis.
-- [ ] Two credible sources with conflicting statistics: annotate **both** with attribution rather than picking one.
-- [ ] Publication/collection dates in structured output so temporal gaps aren't read as contradictions.
-- [ ] Report sections separating well-established from contested findings.
-- [ ] Render by content type — financial as tables, news as prose — rather than flattening."
-  gh issue edit "$(gh issue list --search 'provenance in:title' --json number -q '.[0].number')" --add-label "coverage-gap" >/dev/null 2>&1 || true
+Domain 5 is a primary domain in 4 of the 6 exam scenarios despite its 15% weight.
+
+### Acceptance
+- [ ] Subagents emit structured claim→source mappings (source URL, document name, relevant excerpt) that survive synthesis intact.
+- [ ] Two credible sources with conflicting statistics: annotate **both** with attribution rather than silently selecting one.
+- [ ] Require publication/collection dates in structured output so temporal differences aren't misread as contradictions.
+- [ ] Structure the report to separate well-established findings from contested ones, preserving each source's original characterisation.
+- [ ] Render by content type — financial data as tables, news as prose, technical findings as structured lists — rather than flattening to one format.
+
+### Evidence
+Close with a link to the commit."
 fi
 
 echo

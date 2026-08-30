@@ -76,11 +76,11 @@ a corner case.
 | 5 | Fri 2026-09-04 | [#5] Custom local MCP server with strict JSON schema validation | 2 | `02-mcp-servers/` |
 | 6 | Sat 2026-09-05 | [#6] Tool selection anti-patterns | 2 | `02-mcp-servers/` |
 | 7 | Sun 2026-09-06 | [#7] Review and audit repository code structure | review | repo-wide |
-| 8 | Mon 2026-09-07 | *(open — steer to Domain 1 gaps)* | 1 | `01-agentic-loops/` |
+| 8 | Mon 2026-09-07 | [#11] Agent SDK hooks · [#12] Session state, forking, stale context | 1 | `01-agentic-loops/` |
 | 9 | Tue 2026-09-08 | [#8] Structured outputs and Message Batches API | 4 | `04-prompt-engineering/` |
-| 10 | Wed 2026-09-09 | *(open — steer to Domain 4 gaps)* | 4 | `04-prompt-engineering/` |
+| 10 | Wed 2026-09-09 | [#13] Plan mode vs direct execution | 3 | `03-claude-code/` |
 | 11 | Thu 2026-09-10 | [#9] Prompt caching headers and conversation compaction | 5 | `05-context-reliability/` |
-| 12 | Fri 2026-09-11 | *(open — steer to Domain 5 gaps)* | 5 | `05-context-reliability/` |
+| 12 | Fri 2026-09-11 | [#14] Provenance & conflicting sources | 5 | `05-context-reliability/` |
 | 13 | Sat 2026-09-12 | [#10] Full-length 120-minute mock exam & remediation | all | `05-context-reliability/` |
 
 ### Planned effort vs. blueprint weighting
@@ -89,17 +89,19 @@ The 10 issues allocate 40 h; the remaining 16 h (setup + 3 open days) is the
 slack that closes the gap. This table exists so the shortfall is a **visible
 choice**, not an accident.
 
-| Domain | Weight | Target (56 h) | Issue-allocated | Delta |
+| Domain | Weight | Target (56 h) | Allocated | Delta |
 |---|---|---|---|---|
-| 1 — Agentic | 27% | 15.1 h | 8 h | **−7.1 h** |
-| 2 — Tool/MCP | 18% | 10.1 h | 8 h | −2.1 h |
-| 3 — Claude Code | 20% | 11.2 h | 8 h | −3.2 h |
-| 4 — Prompt Eng | 20% | 11.2 h | 8 h (incl. #7) | −3.2 h |
-| 5 — Context | 15% | 8.4 h | 4 h | −4.4 h |
-| — | — | — | *+4 h mock, +16 h slack* | |
+| 1 — Agentic | 27% | 15.1 h | 12 h — #1, #2, #11, #12 | −3.1 h |
+| 2 — Tool/MCP | 18% | 10.1 h | 8 h — #5, #6 | −2.1 h |
+| 3 — Claude Code | 20% | 11.2 h | 12 h — #3, #4, #13 | +0.8 h |
+| 4 — Prompt Eng | 20% | 11.2 h | 8 h — #8, #7 | −3.2 h |
+| 5 — Context | 15% | 8.4 h | 8 h — #9, #14 | −0.4 h |
+| — | — | — | *+4 h mock exam (#10)* | |
 
-**Recommendation:** spend day 8 and most of the slack on Domain 1. It is both
-the heaviest domain and the one with the most uncovered task statements.
+With the gap issues filed, all 14 days are allocated and the largest remaining
+shortfall is **Domain 4 at −3.2 h** — the one to watch, since its three
+unticketed statements are prompting fundamentals the sample questions lean on.
+Fold them into #8's day where you can.
 
 ---
 
@@ -115,9 +117,9 @@ All 30 task statements against the 10 sprint issues. ✅ = a dedicated issue.
 | 1.2 | Orchestrate multi-agent systems with coordinator-subagent patterns | ✅ #2 |
 | 1.3 | Configure subagent invocation, context passing, and spawning | ✅ #2 |
 | 1.4 | Implement multi-step workflows with enforcement and handoff patterns | ⬜ |
-| 1.5 | Apply Agent SDK hooks for tool call interception and data normalization | ⬜ |
+| 1.5 | Apply Agent SDK hooks for tool call interception and data normalization | ✅ #11 |
 | 1.6 | Design task decomposition strategies for complex workflows | ⬜ |
-| 1.7 | Manage session state, resumption, and forking | ⬜ |
+| 1.7 | Manage session state, resumption, and forking | ✅ #12 |
 
 ### Domain 2 — Tool Design & MCP Integration (18%)
 | TS | Title | Issue |
@@ -134,7 +136,7 @@ All 30 task statements against the 10 sprint issues. ✅ = a dedicated issue.
 | 3.1 | Configure CLAUDE.md files with hierarchy, scoping, modular organization | ✅ #3 |
 | 3.2 | Create and configure custom slash commands and skills | ⬜ |
 | 3.3 | Apply path-specific rules for conditional convention loading | ✅ #3 |
-| 3.4 | Determine when to use plan mode vs direct execution | ⬜ |
+| 3.4 | Determine when to use plan mode vs direct execution | ✅ #13 |
 | 3.5 | Apply iterative refinement techniques for progressive improvement | ⬜ |
 | 3.6 | Integrate Claude Code into CI/CD pipelines | ✅ #4, #7 |
 
@@ -156,18 +158,18 @@ All 30 task statements against the 10 sprint issues. ✅ = a dedicated issue.
 | 5.3 | Implement error propagation strategies across multi-agent systems | ⬜ |
 | 5.4 | Manage context effectively in large codebase exploration | ⬜ |
 | 5.5 | Design human review workflows and confidence calibration | ⬜ |
-| 5.6 | Preserve information provenance and handle uncertainty in synthesis | ⬜ |
+| 5.6 | Preserve information provenance and handle uncertainty in synthesis | ✅ #14 |
 
-**Score: 14 of 30 task statements have a dedicated issue.** The 16 uncovered ones
-are concentrated in Domain 1 (4 of 7 uncovered, at 27% weight) and Domain 5
-(5 of 6 uncovered). To file tracker issues for the four highest-leverage gaps:
+**Score: 18 of 30 task statements have a dedicated issue** — 14 from the core
+sprint plus 4 gap issues ([#11–#14], labelled `coverage-gap`) filed onto the
+three open days for TS 1.5, 1.7, 3.4 and 5.6.
 
-```bash
-./scripts/bootstrap_issues.sh --with-gap-issues
-```
-
-That adds issues for TS 1.5 (hooks), 1.7 (session resume/fork), 3.4 (plan mode),
-and 5.6 (provenance), slotted onto the open days above.
+The 12 still uncovered are 1.4, 1.6, 2.5, 3.2, 3.5, 4.1, 4.2, 4.4, 5.2, 5.3,
+5.4 and 5.5. **Domain 5 remains the thinnest** — 4 of its 6 statements have no
+issue, and it is a primary domain in 4 of the 6 exam scenarios. **Domain 4's
+prompting fundamentals** (4.1 explicit criteria, 4.2 few-shot, 4.4 validation
+retry) are also unticketed at 20% weight and feature heavily in the sample
+questions. Study both even without a tracker reminder.
 
 ---
 
@@ -191,7 +193,8 @@ uv run 01-agentic-loops/orchestrator.py --task "Audit the refund flow" -v
 To (re)create the tracker on GitHub — idempotent, safe to re-run:
 
 ```bash
-./scripts/bootstrap_issues.sh
+./scripts/bootstrap_issues.sh                    # the 10 core sprint issues
+./scripts/bootstrap_issues.sh --with-gap-issues  # + the 4 coverage-gap issues
 ```
 
 ## 6. How the accountability loop works

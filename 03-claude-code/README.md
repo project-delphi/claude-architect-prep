@@ -12,7 +12,7 @@ Reference: [claudecertificationguide.com/learn/3-claude-code-config](https://cla
 | 3.1 | Configure CLAUDE.md files with hierarchy, scoping, modular organization | ✅ #3 |
 | 3.2 | Create and configure custom slash commands and skills | ⬜ |
 | 3.3 | Apply path-specific rules for conditional convention loading | ✅ #3 |
-| 3.4 | Determine when to use plan mode vs direct execution | ⬜ |
+| 3.4 | Determine when to use plan mode vs direct execution | ✅ #13 |
 | 3.5 | Apply iterative refinement techniques for progressive improvement | ⬜ |
 | 3.6 | Integrate Claude Code into CI/CD pipelines | ✅ #4, #7 |
 
@@ -58,7 +58,7 @@ retains its own reasoning and won't question it.
 
 - [ ] TS 3.2 — build a `context: fork` skill and observe what it keeps out of
       the main context.
-- [ ] TS 3.4 — find a task where plan mode is genuinely wrong.
+- [x] TS 3.4 — tracked as #13: find a task where plan mode is genuinely wrong.
 - [ ] TS 3.5 — the interview pattern; when to batch interacting fixes into one
       message vs. iterate sequentially on independent ones.
 - [ ] Re-running CI reviews: feed prior findings in so only new or unaddressed

@@ -15,7 +15,7 @@ Reference: [claudecertificationguide.com/learn/5-context-management](https://cla
 | 5.3 | Implement error propagation strategies across multi-agent systems | ⬜ |
 | 5.4 | Manage context effectively in large codebase exploration | ⬜ |
 | 5.5 | Design human review workflows and confidence calibration | ⬜ |
-| 5.6 | Preserve information provenance and handle uncertainty in synthesis | ⬜ |
+| 5.6 | Preserve information provenance and handle uncertainty in synthesis | ✅ #14 |
 
 ## Planned contents
 
@@ -76,5 +76,5 @@ validation set before reducing human review.
 - [ ] TS 5.4 — scratchpad files and structured state manifests for crash
       recovery; when to `/compact`.
 - [ ] TS 5.5 — routing by field-level confidence when reviewer capacity is fixed.
-- [ ] Rendering by content type in synthesis (financial → tables, news → prose)
-      rather than flattening everything to one format.
+- [x] TS 5.6 — tracked as #14: claim→source mappings, conflicting statistics,
+      and rendering by content type rather than flattening to one format.

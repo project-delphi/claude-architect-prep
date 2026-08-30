@@ -13,9 +13,9 @@ Reference: [claudecertificationguide.com/learn/1-agentic-architecture](https://c
 | 1.2 | Orchestrate multi-agent systems with coordinator-subagent patterns | ✅ #2 |
 | 1.3 | Configure subagent invocation, context passing, and spawning | ✅ #2 |
 | 1.4 | Implement multi-step workflows with enforcement and handoff patterns | ⬜ |
-| 1.5 | Apply Agent SDK hooks for tool call interception and data normalization | ⬜ |
+| 1.5 | Apply Agent SDK hooks for tool call interception and data normalization | ✅ #11 |
 | 1.6 | Design task decomposition strategies for complex workflows | ⬜ |
-| 1.7 | Manage session state, resumption, and forking | ⬜ |
+| 1.7 | Manage session state, resumption, and forking | ✅ #12 |
 
 ## Contents
 
@@ -77,12 +77,11 @@ labelled in the source:
 - [ ] TS 1.4 — programmatic prerequisite gates vs. prompt instructions. When is
       "non-zero failure rate" unacceptable? (Sample Q1: identity verification
       before financial operations → **programmatic enforcement**.)
-- [ ] TS 1.5 — `PostToolUse` hooks for normalising heterogeneous data
-      (Unix timestamps vs ISO 8601), and interception hooks that block
-      policy-violating calls.
+- [x] TS 1.5 — tracked as #11: `PostToolUse` normalisation and policy
+      interception hooks.
 - [ ] TS 1.6 — fixed prompt chaining vs. dynamic adaptive decomposition.
-- [ ] TS 1.7 — `--resume <name>` vs `fork_session`; when is a fresh session with
-      an injected summary more reliable than resuming with stale tool results?
+- [x] TS 1.7 — tracked as #12: `--resume <name>` vs `fork_session`, and when a
+      fresh session with an injected summary beats resuming on stale results.
 - [ ] Coordinator decomposition failure mode (Sample Q7): overly narrow
       decomposition silently drops whole subtopics while every subagent
       "succeeds".
