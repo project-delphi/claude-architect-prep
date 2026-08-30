@@ -1,0 +1,15 @@
+[project]
+name = "claude-architect-prep"
+version = "0.1.0"
+description = "Study sprint for the Claude Certified Architect - Foundations exam (CCAR-F)"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=1.0",
+]
+
+[dependency-groups]
+dev = []
+
+[tool.uv]
+package = false
