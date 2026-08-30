@@ -62,25 +62,25 @@ add_label "secondary"            "C5DEF5" "Studied alongside that day's primary 
 # be created through the REST API first.
 # --------------------------------------------------------------------------
 declare -a MILESTONES=(
-  "2026-08-31|Day 1 - Agentic loop"
-  "2026-09-01|Day 2 - Subagent delegation"
-  "2026-09-02|Day 3 - CLAUDE.md & rules"
-  "2026-09-03|Day 4 - Headless & CI/CD"
-  "2026-09-04|Day 5 - MCP server"
-  "2026-09-05|Day 6 - Tool selection"
-  "2026-09-06|Day 7 - Repo audit"
-  "2026-09-08|Day 9 - Structured output & batches"
-  "2026-09-10|Day 11 - Caching & compaction"
-  "2026-09-12|Day 13 - Mock exam"
+  "2026-09-07|Day 1 - Agentic loop"
+  "2026-09-08|Day 2 - Subagent delegation"
+  "2026-09-09|Day 3 - CLAUDE.md & rules"
+  "2026-09-10|Day 4 - Headless & CI/CD"
+  "2026-09-11|Day 5 - MCP server"
+  "2026-09-12|Day 6 - Tool selection"
+  "2026-09-13|Day 7 - Repo audit"
+  "2026-09-15|Day 9 - Structured output & batches"
+  "2026-09-17|Day 11 - Caching & compaction"
+  "2026-09-19|Day 13 - Mock exam"
 )
 
 # The three open slack days get milestones when either extra batch is filed -
 # both the gap issues and several secondary issues land on them.
 if [[ $WITH_GAPS -eq 1 || $WITH_SECONDARY -eq 1 ]]; then
   MILESTONES+=(
-    "2026-09-07|Day 8 - Domain 1 gaps"
-    "2026-09-09|Day 10 - Domain 3 gaps"
-    "2026-09-11|Day 12 - Domain 5 gaps"
+    "2026-09-14|Day 8 - Domain 1 gaps"
+    "2026-09-16|Day 10 - Domain 3 gaps"
+    "2026-09-18|Day 12 - Domain 5 gaps"
   )
 fi
 
@@ -137,10 +137,10 @@ echo "Issues:"
 
 create_issue \
   "Implement orchestrator-worker loop with explicit stop_reason checks" \
-  "domain-1-agentic" "2026-08-31" \
+  "domain-1-agentic" "2026-09-07" \
 "**Domain:** 1 — Agentic Architecture & Orchestration (27%)
 **Task statements:** 1.1
-**Due:** 2026-08-31 · Sprint day 1
+**Due:** 2026-09-07 · Sprint day 1
 **Directory:** \`01-agentic-loops/\`
 
 Harden the starter \`orchestrator.py\` into a reference implementation.
@@ -163,10 +163,10 @@ Close with a link to the commit."
 
 create_issue \
   "Build multi-agent subagent delegation pattern" \
-  "domain-1-agentic" "2026-09-01" \
+  "domain-1-agentic" "2026-09-08" \
 "**Domain:** 1 — Agentic Architecture & Orchestration (27%)
 **Task statements:** 1.2, 1.3
-**Due:** 2026-09-01 · Sprint day 2
+**Due:** 2026-09-08 · Sprint day 2
 **Directory:** \`01-agentic-loops/\`
 
 Replace the \`delegate_subtask\` stub with real coordinator-subagent delegation.
@@ -187,10 +187,10 @@ Close with a link to the commit."
 
 create_issue \
   "Configure project-level CLAUDE.md and path-scoped rules" \
-  "domain-3-claude-code" "2026-09-02" \
+  "domain-3-claude-code" "2026-09-09" \
 "**Domain:** 3 — Claude Code Configuration & Workflows (20%)
 **Task statements:** 3.1, 3.3
-**Due:** 2026-09-02 · Sprint day 3
+**Due:** 2026-09-09 · Sprint day 3
 **Directory:** \`03-claude-code/\`
 
 ### Acceptance
@@ -205,10 +205,10 @@ Close with a link to the commit."
 
 create_issue \
   "Set up headless execution and CI/CD workflow automation" \
-  "domain-3-claude-code" "2026-09-03" \
+  "domain-3-claude-code" "2026-09-10" \
 "**Domain:** 3 — Claude Code Configuration & Workflows (20%)
 **Task statements:** 3.6
-**Due:** 2026-09-03 · Sprint day 4
+**Due:** 2026-09-10 · Sprint day 4
 **Directory:** \`03-claude-code/\`
 
 ### Acceptance
@@ -223,10 +223,10 @@ Close with a link to the workflow run."
 
 create_issue \
   "Develop custom local MCP server with strict JSON schema validation" \
-  "domain-2-mcp" "2026-09-04" \
+  "domain-2-mcp" "2026-09-11" \
 "**Domain:** 2 — Tool Design & MCP Integration (18%)
 **Task statements:** 2.2, 2.4
-**Due:** 2026-09-04 · Sprint day 5
+**Due:** 2026-09-11 · Sprint day 5
 **Directory:** \`02-mcp-servers/\`
 
 ### Acceptance
@@ -242,10 +242,10 @@ Close with a link to the commit."
 
 create_issue \
   "Analyze and test tool selection anti-patterns" \
-  "domain-2-mcp" "2026-09-05" \
+  "domain-2-mcp" "2026-09-12" \
 "**Domain:** 2 — Tool Design & MCP Integration (18%)
 **Task statements:** 2.1, 2.3
-**Due:** 2026-09-05 · Sprint day 6
+**Due:** 2026-09-12 · Sprint day 6
 **Directory:** \`02-mcp-servers/\`
 
 An experiment, not an essay: measure selection accuracy before and after.
@@ -263,9 +263,9 @@ Close with a link to the results table."
 
 create_issue \
   "Review and audit repository code structure" \
-  "topic:review" "2026-09-06" \
+  "topic:review" "2026-09-13" \
 "**Domain:** cross-domain (primarily 4.6, 3.6)
-**Due:** 2026-09-06 · Sprint day 7
+**Due:** 2026-09-13 · Sprint day 7
 **Scope:** repo-wide
 
 Mid-sprint checkpoint — apply the review architecture the exam tests to this repo.
@@ -283,10 +283,10 @@ Close with the review output committed."
 
 create_issue \
   "Master structured outputs and Message Batches API" \
-  "domain-4-prompt" "2026-09-08" \
+  "domain-4-prompt" "2026-09-15" \
 "**Domain:** 4 — Prompt Engineering & Structured Output (20%)
 **Task statements:** 4.3, 4.5
-**Due:** 2026-09-08 · Sprint day 9
+**Due:** 2026-09-15 · Sprint day 9
 **Directory:** \`04-prompt-engineering/\`
 
 ### Acceptance
@@ -304,10 +304,10 @@ Close with a link to the commit."
 
 create_issue \
   "Implement prompt caching headers and conversation compaction" \
-  "domain-5-context" "2026-09-10" \
+  "domain-5-context" "2026-09-17" \
 "**Domain:** 5 — Context Management & Reliability (15%)
 **Task statements:** 5.1
-**Due:** 2026-09-10 · Sprint day 11
+**Due:** 2026-09-17 · Sprint day 11
 **Directory:** \`05-context-reliability/\`
 
 ### Acceptance
@@ -323,9 +323,9 @@ Close with a link to the commit including measured cache hit rates."
 
 create_issue \
   "Simulate full-length 120-minute mock exam & remediation" \
-  "topic:exam-prep" "2026-09-12" \
+  "topic:exam-prep" "2026-09-19" \
 "**Domain:** all
-**Due:** 2026-09-12 · Sprint day 13
+**Due:** 2026-09-19 · Sprint day 13
 **Directory:** \`05-context-reliability/mock-exam/\`
 
 ### Acceptance
@@ -351,10 +351,10 @@ if [[ $WITH_GAPS -eq 1 ]]; then
 
   create_issue \
     "Apply Agent SDK hooks for tool interception and data normalization" \
-    "domain-1-agentic,coverage-gap" "2026-09-07" \
+    "domain-1-agentic,coverage-gap" "2026-09-14" \
 "**Domain:** 1 — Agentic Architecture & Orchestration (27%)
 **Task statement:** 1.5 — *no dedicated issue in the original 10*
-**Due:** 2026-09-07 · Sprint day 8
+**Due:** 2026-09-14 · Sprint day 8
 **Directory:** \`01-agentic-loops/\`
 
 Domain 1 is the heaviest on the exam and had 4 of its 7 task statements
@@ -371,10 +371,10 @@ Close with a link to the commit."
 
   create_issue \
     "Manage session state: resumption, forking, and stale context" \
-    "domain-1-agentic,coverage-gap" "2026-09-07" \
+    "domain-1-agentic,coverage-gap" "2026-09-14" \
 "**Domain:** 1 — Agentic Architecture & Orchestration (27%)
 **Task statement:** 1.7 — *no dedicated issue in the original 10*
-**Due:** 2026-09-07 · Sprint day 8
+**Due:** 2026-09-14 · Sprint day 8
 **Directory:** \`01-agentic-loops/\`
 
 ### Acceptance
@@ -388,10 +388,10 @@ Close with a link to the commit."
 
   create_issue \
     "Determine when to use plan mode vs direct execution" \
-    "domain-3-claude-code,coverage-gap" "2026-09-09" \
+    "domain-3-claude-code,coverage-gap" "2026-09-16" \
 "**Domain:** 3 — Claude Code Configuration & Workflows (20%)
 **Task statement:** 3.4 — *no dedicated issue in the original 10*
-**Due:** 2026-09-09 · Sprint day 10
+**Due:** 2026-09-16 · Sprint day 10
 **Directory:** \`03-claude-code/\`
 
 ### Acceptance
@@ -406,10 +406,10 @@ Close with a link to the write-up."
 
   create_issue \
     "Preserve provenance and handle conflicting sources in synthesis" \
-    "domain-5-context,coverage-gap" "2026-09-11" \
+    "domain-5-context,coverage-gap" "2026-09-18" \
 "**Domain:** 5 — Context Management & Reliability (15%)
 **Task statement:** 5.6 — *no dedicated issue in the original 10*
-**Due:** 2026-09-11 · Sprint day 12
+**Due:** 2026-09-18 · Sprint day 12
 **Directory:** \`05-context-reliability/\`
 
 Domain 5 is a primary domain in 4 of the 6 exam scenarios despite its 15% weight.
@@ -438,7 +438,7 @@ if [[ $WITH_SECONDARY -eq 1 ]]; then
 
   create_issue \
     "Design task decomposition strategies for complex workflows" \
-    "domain-1-agentic,secondary" "2026-09-01" \
+    "domain-1-agentic,secondary" "2026-09-08" \
 "**Domain:** 1 — Agentic Architecture & Orchestration (27%)
 **Task statement:** 1.6 · **Secondary** — study alongside [#2] on sprint day 2
 **Directory:** \`01-agentic-loops/\`
@@ -457,7 +457,7 @@ Which decomposition pattern fits which workflow shape — predictable vs open-en
 
   create_issue \
     "Implement error propagation strategies across multi-agent systems" \
-    "domain-5-context,secondary" "2026-09-01" \
+    "domain-5-context,secondary" "2026-09-08" \
 "**Domain:** 5 — Context Management & Reliability (15%)
 **Task statement:** 5.3 · **Secondary** — study alongside [#2] on sprint day 2
 **Directory:** \`05-context-reliability/\`
@@ -477,7 +477,7 @@ Which decomposition pattern fits which workflow shape — predictable vs open-en
 
   create_issue \
     "Create and configure custom slash commands and skills" \
-    "domain-3-claude-code,secondary" "2026-09-02" \
+    "domain-3-claude-code,secondary" "2026-09-09" \
 "**Domain:** 3 — Claude Code Configuration & Workflows (20%)
 **Task statement:** 3.2 · **Secondary** — study alongside [#3] on sprint day 3
 **Directory:** \`03-claude-code/\`
@@ -494,7 +494,7 @@ Which decomposition pattern fits which workflow shape — predictable vs open-en
 
   create_issue \
     "Select and apply built-in tools effectively" \
-    "domain-2-mcp,secondary" "2026-09-05" \
+    "domain-2-mcp,secondary" "2026-09-12" \
 "**Domain:** 2 — Tool Design & MCP Integration (18%)
 **Task statement:** 2.5 · **Secondary** — study alongside [#6] on sprint day 6
 **Directory:** \`02-mcp-servers/\`
@@ -514,7 +514,7 @@ Given a concrete search task, which built-in tool is correct — and why the oth
 
   create_issue \
     "Design prompts with explicit criteria to reduce false positives" \
-    "domain-4-prompt,secondary" "2026-09-06" \
+    "domain-4-prompt,secondary" "2026-09-13" \
 "**Domain:** 4 — Prompt Engineering & Structured Output (20%)
 **Task statement:** 4.1 · **Secondary** — study alongside [#7] on sprint day 7
 **Directory:** \`04-prompt-engineering/\`
@@ -531,7 +531,7 @@ Given a concrete search task, which built-in tool is correct — and why the oth
 
   create_issue \
     "Apply few-shot prompting to improve output consistency" \
-    "domain-4-prompt,secondary" "2026-09-08" \
+    "domain-4-prompt,secondary" "2026-09-15" \
 "**Domain:** 4 — Prompt Engineering & Structured Output (20%)
 **Task statement:** 4.2 · **Secondary** — study alongside [#8] on sprint day 9
 **Directory:** \`04-prompt-engineering/\`
@@ -552,7 +552,7 @@ Given a concrete search task, which built-in tool is correct — and why the oth
 
   create_issue \
     "Implement validation, retry, and feedback loops for extraction quality" \
-    "domain-4-prompt,secondary" "2026-09-08" \
+    "domain-4-prompt,secondary" "2026-09-15" \
 "**Domain:** 4 — Prompt Engineering & Structured Output (20%)
 **Task statement:** 4.4 · **Secondary** — study alongside [#8] on sprint day 9
 **Directory:** \`04-prompt-engineering/\`
@@ -568,7 +568,7 @@ Given a concrete search task, which built-in tool is correct — and why the oth
 
   create_issue \
     "Apply iterative refinement techniques for progressive improvement" \
-    "domain-3-claude-code,secondary" "2026-09-09" \
+    "domain-3-claude-code,secondary" "2026-09-16" \
 "**Domain:** 3 — Claude Code Configuration & Workflows (20%)
 **Task statement:** 3.5 · **Secondary** — study alongside [#13] on sprint day 10
 **Directory:** \`03-claude-code/\`
@@ -584,7 +584,7 @@ Given a concrete search task, which built-in tool is correct — and why the oth
 
   create_issue \
     "Manage context effectively in large codebase exploration" \
-    "domain-5-context,secondary" "2026-09-10" \
+    "domain-5-context,secondary" "2026-09-17" \
 "**Domain:** 5 — Context Management & Reliability (15%)
 **Task statement:** 5.4 · **Secondary** — study alongside [#9] on sprint day 11
 **Directory:** \`05-context-reliability/\`
@@ -601,7 +601,7 @@ Given a concrete search task, which built-in tool is correct — and why the oth
 
   create_issue \
     "Design effective escalation and ambiguity resolution patterns" \
-    "domain-5-context,secondary" "2026-09-11" \
+    "domain-5-context,secondary" "2026-09-18" \
 "**Domain:** 5 — Context Management & Reliability (15%)
 **Task statement:** 5.2 · **Secondary** — study alongside [#14] on sprint day 12
 **Directory:** \`05-context-reliability/\`
@@ -622,7 +622,7 @@ Given a concrete search task, which built-in tool is correct — and why the oth
 
   create_issue \
     "Design human review workflows and confidence calibration" \
-    "domain-5-context,secondary" "2026-09-11" \
+    "domain-5-context,secondary" "2026-09-18" \
 "**Domain:** 5 — Context Management & Reliability (15%)
 **Task statement:** 5.5 · **Secondary** — study alongside [#14] on sprint day 12
 **Directory:** \`05-context-reliability/\`
@@ -638,7 +638,7 @@ Given a concrete search task, which built-in tool is correct — and why the oth
 
   create_issue \
     "Implement multi-step workflows with enforcement and handoff patterns" \
-    "domain-1-agentic,secondary" "2026-09-07" \
+    "domain-1-agentic,secondary" "2026-09-14" \
 "**Domain:** 1 — Agentic Architecture & Orchestration (27%)
 **Task statement:** 1.4 · **Secondary** — study alongside [#11] on sprint day 8
 **Directory:** \`01-agentic-loops/\`

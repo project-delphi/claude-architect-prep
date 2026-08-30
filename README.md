@@ -4,7 +4,7 @@ A 2-week, 4-hour/day study sprint. The repository is structured by the official
 exam blueprint, tracked with GitHub issues carrying real deadlines, and anchored
 by working code rather than notes alone.
 
-**Sprint window:** 2026-08-30 → 2026-09-12 (14 days · 4 h/day · **56 h**)
+**Sprint window:** 2026-09-06 → 2026-09-19 (14 days · 4 h/day · **56 h**)
 **Candidate:** [@project-delphi](https://github.com/project-delphi)
 
 ---
@@ -68,20 +68,20 @@ a corner case.
 
 | Day | Date | Issue | Domain | Deliverable lands in |
 |---|---|---|---|---|
-| 0 | Sun 2026-08-30 | — | setup | repo scaffold (this commit) |
-| 1 | Mon 2026-08-31 | [#1] Orchestrator-worker loop with explicit `stop_reason` checks | 1 | `01-agentic-loops/` |
-| 2 | Tue 2026-09-01 | [#2] Multi-agent subagent delegation pattern<br>*+ [#15] decomposition · [#16] error propagation* | 1, 5 | `01-agentic-loops/` |
-| 3 | Wed 2026-09-02 | [#3] Project-level CLAUDE.md and path-scoped rules<br>*+ [#17] slash commands & skills* | 3 | `03-claude-code/` |
-| 4 | Thu 2026-09-03 | [#4] Headless execution and CI/CD workflow automation | 3 | `03-claude-code/` |
-| 5 | Fri 2026-09-04 | [#5] Custom local MCP server with strict JSON schema validation | 2 | `02-mcp-servers/` |
-| 6 | Sat 2026-09-05 | [#6] Tool selection anti-patterns<br>*+ [#18] built-in tools* | 2 | `02-mcp-servers/` |
-| 7 | Sun 2026-09-06 | [#7] Review and audit repository code structure<br>*+ [#19] explicit criteria & false positives* | review, 4 | repo-wide |
-| 8 | Mon 2026-09-07 | [#11] Agent SDK hooks · [#12] Session state, forking, stale context<br>*+ [#26] enforcement & handoff* | 1 | `01-agentic-loops/` |
-| 9 | Tue 2026-09-08 | [#8] Structured outputs and Message Batches API<br>*+ [#20] few-shot · [#21] validation retry* | 4 | `04-prompt-engineering/` |
-| 10 | Wed 2026-09-09 | [#13] Plan mode vs direct execution<br>*+ [#22] iterative refinement* | 3 | `03-claude-code/` |
-| 11 | Thu 2026-09-10 | [#9] Prompt caching headers and conversation compaction<br>*+ [#23] large-codebase context* | 5 | `05-context-reliability/` |
-| 12 | Fri 2026-09-11 | [#14] Provenance & conflicting sources<br>*+ [#24] escalation · [#25] confidence calibration* | 5 | `05-context-reliability/` |
-| 13 | Sat 2026-09-12 | [#10] Full-length 120-minute mock exam & remediation | all | `05-context-reliability/` |
+| 0 | Sun 2026-09-06 | — | setup | repo scaffold (this commit) |
+| 1 | Mon 2026-09-07 | [#1] Orchestrator-worker loop with explicit `stop_reason` checks | 1 | `01-agentic-loops/` |
+| 2 | Tue 2026-09-08 | [#2] Multi-agent subagent delegation pattern<br>*+ [#15] decomposition · [#16] error propagation* | 1, 5 | `01-agentic-loops/` |
+| 3 | Wed 2026-09-09 | [#3] Project-level CLAUDE.md and path-scoped rules<br>*+ [#17] slash commands & skills* | 3 | `03-claude-code/` |
+| 4 | Thu 2026-09-10 | [#4] Headless execution and CI/CD workflow automation | 3 | `03-claude-code/` |
+| 5 | Fri 2026-09-11 | [#5] Custom local MCP server with strict JSON schema validation | 2 | `02-mcp-servers/` |
+| 6 | Sat 2026-09-12 | [#6] Tool selection anti-patterns<br>*+ [#18] built-in tools* | 2 | `02-mcp-servers/` |
+| 7 | Sun 2026-09-13 | [#7] Review and audit repository code structure<br>*+ [#19] explicit criteria & false positives* | review, 4 | repo-wide |
+| 8 | Mon 2026-09-14 | [#11] Agent SDK hooks · [#12] Session state, forking, stale context<br>*+ [#26] enforcement & handoff* | 1 | `01-agentic-loops/` |
+| 9 | Tue 2026-09-15 | [#8] Structured outputs and Message Batches API<br>*+ [#20] few-shot · [#21] validation retry* | 4 | `04-prompt-engineering/` |
+| 10 | Wed 2026-09-16 | [#13] Plan mode vs direct execution<br>*+ [#22] iterative refinement* | 3 | `03-claude-code/` |
+| 11 | Thu 2026-09-17 | [#9] Prompt caching headers and conversation compaction<br>*+ [#23] large-codebase context* | 5 | `05-context-reliability/` |
+| 12 | Fri 2026-09-18 | [#14] Provenance & conflicting sources<br>*+ [#24] escalation · [#25] confidence calibration* | 5 | `05-context-reliability/` |
+| 13 | Sat 2026-09-19 | [#10] Full-length 120-minute mock exam & remediation | all | `05-context-reliability/` |
 
 ### Planned effort vs. blueprint weighting
 
