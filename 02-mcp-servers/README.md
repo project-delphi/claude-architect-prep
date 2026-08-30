@@ -13,7 +13,7 @@ Reference: [claudecertificationguide.com/learn/2-tool-design-mcp](https://claude
 | 2.2 | Implement structured error responses for MCP tools | ✅ #5 |
 | 2.3 | Distribute tools appropriately across agents and configure tool choice | ✅ #6 |
 | 2.4 | Integrate MCP servers into Claude Code and agent workflows | ✅ #5 |
-| 2.5 | Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) | ⬜ |
+| 2.5 | Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) | ✅ #18 |
 
 ## Planned contents
 
@@ -57,7 +57,7 @@ routing. Scope each subagent's tools to its role; add narrow cross-role tools
 
 ## Open questions for the sprint
 
-- [ ] TS 2.5 — Grep (content) vs Glob (paths) vs Read/Write vs Edit; the
+- [x] TS 2.5 — tracked as #18: Grep (content) vs Glob (paths) vs Read/Write vs Edit; the
       Read + Write fallback when Edit can't find unique anchor text.
 - [ ] Why does an agent prefer built-in Grep over a more capable MCP tool, and
       what description change fixes it?

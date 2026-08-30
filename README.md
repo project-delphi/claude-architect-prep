@@ -70,17 +70,17 @@ a corner case.
 |---|---|---|---|---|
 | 0 | Sun 2026-08-30 | — | setup | repo scaffold (this commit) |
 | 1 | Mon 2026-08-31 | [#1] Orchestrator-worker loop with explicit `stop_reason` checks | 1 | `01-agentic-loops/` |
-| 2 | Tue 2026-09-01 | [#2] Multi-agent subagent delegation pattern | 1 | `01-agentic-loops/` |
-| 3 | Wed 2026-09-02 | [#3] Project-level CLAUDE.md and path-scoped rules | 3 | `03-claude-code/` |
+| 2 | Tue 2026-09-01 | [#2] Multi-agent subagent delegation pattern<br>*+ [#15] decomposition · [#16] error propagation* | 1, 5 | `01-agentic-loops/` |
+| 3 | Wed 2026-09-02 | [#3] Project-level CLAUDE.md and path-scoped rules<br>*+ [#17] slash commands & skills* | 3 | `03-claude-code/` |
 | 4 | Thu 2026-09-03 | [#4] Headless execution and CI/CD workflow automation | 3 | `03-claude-code/` |
 | 5 | Fri 2026-09-04 | [#5] Custom local MCP server with strict JSON schema validation | 2 | `02-mcp-servers/` |
-| 6 | Sat 2026-09-05 | [#6] Tool selection anti-patterns | 2 | `02-mcp-servers/` |
-| 7 | Sun 2026-09-06 | [#7] Review and audit repository code structure | review | repo-wide |
-| 8 | Mon 2026-09-07 | [#11] Agent SDK hooks · [#12] Session state, forking, stale context | 1 | `01-agentic-loops/` |
-| 9 | Tue 2026-09-08 | [#8] Structured outputs and Message Batches API | 4 | `04-prompt-engineering/` |
-| 10 | Wed 2026-09-09 | [#13] Plan mode vs direct execution | 3 | `03-claude-code/` |
-| 11 | Thu 2026-09-10 | [#9] Prompt caching headers and conversation compaction | 5 | `05-context-reliability/` |
-| 12 | Fri 2026-09-11 | [#14] Provenance & conflicting sources | 5 | `05-context-reliability/` |
+| 6 | Sat 2026-09-05 | [#6] Tool selection anti-patterns<br>*+ [#18] built-in tools* | 2 | `02-mcp-servers/` |
+| 7 | Sun 2026-09-06 | [#7] Review and audit repository code structure<br>*+ [#19] explicit criteria & false positives* | review, 4 | repo-wide |
+| 8 | Mon 2026-09-07 | [#11] Agent SDK hooks · [#12] Session state, forking, stale context<br>*+ [#26] enforcement & handoff* | 1 | `01-agentic-loops/` |
+| 9 | Tue 2026-09-08 | [#8] Structured outputs and Message Batches API<br>*+ [#20] few-shot · [#21] validation retry* | 4 | `04-prompt-engineering/` |
+| 10 | Wed 2026-09-09 | [#13] Plan mode vs direct execution<br>*+ [#22] iterative refinement* | 3 | `03-claude-code/` |
+| 11 | Thu 2026-09-10 | [#9] Prompt caching headers and conversation compaction<br>*+ [#23] large-codebase context* | 5 | `05-context-reliability/` |
+| 12 | Fri 2026-09-11 | [#14] Provenance & conflicting sources<br>*+ [#24] escalation · [#25] confidence calibration* | 5 | `05-context-reliability/` |
 | 13 | Sat 2026-09-12 | [#10] Full-length 120-minute mock exam & remediation | all | `05-context-reliability/` |
 
 ### Planned effort vs. blueprint weighting
@@ -116,9 +116,9 @@ All 30 task statements against the 10 sprint issues. ✅ = a dedicated issue.
 | 1.1 | Design and implement agentic loops for autonomous task execution | ✅ #1 |
 | 1.2 | Orchestrate multi-agent systems with coordinator-subagent patterns | ✅ #2 |
 | 1.3 | Configure subagent invocation, context passing, and spawning | ✅ #2 |
-| 1.4 | Implement multi-step workflows with enforcement and handoff patterns | ⬜ |
+| 1.4 | Implement multi-step workflows with enforcement and handoff patterns | ✅ #26 |
 | 1.5 | Apply Agent SDK hooks for tool call interception and data normalization | ✅ #11 |
-| 1.6 | Design task decomposition strategies for complex workflows | ⬜ |
+| 1.6 | Design task decomposition strategies for complex workflows | ✅ #15 |
 | 1.7 | Manage session state, resumption, and forking | ✅ #12 |
 
 ### Domain 2 — Tool Design & MCP Integration (18%)
@@ -128,25 +128,25 @@ All 30 task statements against the 10 sprint issues. ✅ = a dedicated issue.
 | 2.2 | Implement structured error responses for MCP tools | ✅ #5 |
 | 2.3 | Distribute tools appropriately across agents and configure tool choice | ✅ #6 |
 | 2.4 | Integrate MCP servers into Claude Code and agent workflows | ✅ #5 |
-| 2.5 | Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) | ⬜ |
+| 2.5 | Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) | ✅ #18 |
 
 ### Domain 3 — Claude Code Configuration & Workflows (20%)
 | TS | Title | Issue |
 |---|---|---|
 | 3.1 | Configure CLAUDE.md files with hierarchy, scoping, modular organization | ✅ #3 |
-| 3.2 | Create and configure custom slash commands and skills | ⬜ |
+| 3.2 | Create and configure custom slash commands and skills | ✅ #17 |
 | 3.3 | Apply path-specific rules for conditional convention loading | ✅ #3 |
 | 3.4 | Determine when to use plan mode vs direct execution | ✅ #13 |
-| 3.5 | Apply iterative refinement techniques for progressive improvement | ⬜ |
+| 3.5 | Apply iterative refinement techniques for progressive improvement | ✅ #22 |
 | 3.6 | Integrate Claude Code into CI/CD pipelines | ✅ #4, #7 |
 
 ### Domain 4 — Prompt Engineering & Structured Output (20%)
 | TS | Title | Issue |
 |---|---|---|
-| 4.1 | Design prompts with explicit criteria to reduce false positives | ⬜ |
-| 4.2 | Apply few-shot prompting to improve output consistency | ⬜ |
+| 4.1 | Design prompts with explicit criteria to reduce false positives | ✅ #19 |
+| 4.2 | Apply few-shot prompting to improve output consistency | ✅ #20 |
 | 4.3 | Enforce structured output using tool use and JSON schemas | ✅ #8 |
-| 4.4 | Implement validation, retry, and feedback loops for extraction quality | ⬜ |
+| 4.4 | Implement validation, retry, and feedback loops for extraction quality | ✅ #21 |
 | 4.5 | Design efficient batch processing strategies | ✅ #8 |
 | 4.6 | Design multi-instance and multi-pass review architectures | ✅ #7 |
 
@@ -154,22 +154,28 @@ All 30 task statements against the 10 sprint issues. ✅ = a dedicated issue.
 | TS | Title | Issue |
 |---|---|---|
 | 5.1 | Manage conversation context across long interactions | ✅ #9 |
-| 5.2 | Design effective escalation and ambiguity resolution patterns | ⬜ |
-| 5.3 | Implement error propagation strategies across multi-agent systems | ⬜ |
-| 5.4 | Manage context effectively in large codebase exploration | ⬜ |
-| 5.5 | Design human review workflows and confidence calibration | ⬜ |
+| 5.2 | Design effective escalation and ambiguity resolution patterns | ✅ #24 |
+| 5.3 | Implement error propagation strategies across multi-agent systems | ✅ #16 |
+| 5.4 | Manage context effectively in large codebase exploration | ✅ #23 |
+| 5.5 | Design human review workflows and confidence calibration | ✅ #25 |
 | 5.6 | Preserve information provenance and handle uncertainty in synthesis | ✅ #14 |
 
-**Score: 18 of 30 task statements have a dedicated issue** — 14 from the core
-sprint plus 4 gap issues ([#11–#14], labelled `coverage-gap`) filed onto the
-three open days for TS 1.5, 1.7, 3.4 and 5.6.
+**Score: 30 of 30 task statements tracked**, across 26 issues in three tiers:
 
-The 12 still uncovered are 1.4, 1.6, 2.5, 3.2, 3.5, 4.1, 4.2, 4.4, 5.2, 5.3,
-5.4 and 5.5. **Domain 5 remains the thinnest** — 4 of its 6 statements have no
-issue, and it is a primary domain in 4 of the 6 exam scenarios. **Domain 4's
-prompting fundamentals** (4.1 explicit criteria, 4.2 few-shot, 4.4 validation
-retry) are also unticketed at 20% weight and feature heavily in the sample
-questions. Study both even without a tracker reminder.
+| Tier | Label | Count | What it means |
+|---|---|---|---|
+| Core | *(domain label only)* | 10 | Owns its day. A build with committed artefacts. |
+| Gap | `coverage-gap` | 4 | Owns its day. Filed to close Domain 1/3/5 holes. |
+| Secondary | `secondary` | 12 | **Shares** a day with the primary issue above it. Reading and reasoning, not a separate build. |
+
+> **This is an over-committed sprint, by construction.** 26 issues across 14 days
+> at 4 h/day is 56 h against roughly 90 h of work if every issue were a build.
+> That is why the 12 secondary issues are labelled and scoped as comprehension
+> checkpoints — each is paired with the day whose primary issue is topically
+> closest, so it is studied *alongside* related material rather than competing
+> for build time. If a day runs long, **the secondary issue is what slips.**
+> Track completion against the 14 core-plus-gap issues; treat the 12 secondary
+> ones as a reading list with deadlines attached.
 
 ---
 
@@ -195,6 +201,8 @@ To (re)create the tracker on GitHub — idempotent, safe to re-run:
 ```bash
 ./scripts/bootstrap_issues.sh                    # the 10 core sprint issues
 ./scripts/bootstrap_issues.sh --with-gap-issues  # + the 4 coverage-gap issues
+./scripts/bootstrap_issues.sh --with-secondary   # + the 12 secondary issues
+./scripts/bootstrap_issues.sh --all              # all 26
 ```
 
 ## 6. How the accountability loop works

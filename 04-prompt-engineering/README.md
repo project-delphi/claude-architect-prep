@@ -9,10 +9,10 @@ Reference: [claudecertificationguide.com/learn/4-prompt-engineering](https://cla
 
 | TS | Title | Issue |
 |---|---|---|
-| 4.1 | Design prompts with explicit criteria to reduce false positives | ⬜ |
-| 4.2 | Apply few-shot prompting to improve output consistency | ⬜ |
+| 4.1 | Design prompts with explicit criteria to reduce false positives | ✅ #19 |
+| 4.2 | Apply few-shot prompting to improve output consistency | ✅ #20 |
 | 4.3 | Enforce structured output using tool use and JSON schemas | ✅ #8 |
-| 4.4 | Implement validation, retry, and feedback loops for extraction quality | ⬜ |
+| 4.4 | Implement validation, retry, and feedback loops for extraction quality | ✅ #21 |
 | 4.5 | Design efficient batch processing strategies | ✅ #8 |
 | 4.6 | Design multi-instance and multi-pass review architectures | ✅ #7 |
 
@@ -65,8 +65,8 @@ attention dilution.
 
 ## Open questions for the sprint
 
-- [ ] TS 4.1 — temporarily disabling a high-false-positive category to restore
+- [x] TS 4.1 — tracked as #19: temporarily disabling a high-false-positive category to restore
       developer trust: when is that the right call?
-- [ ] TS 4.4 — `detected_pattern` fields to make dismissal patterns analysable.
+- [x] TS 4.4 — tracked as #21: `detected_pattern` fields to make dismissal patterns analysable.
 - [ ] Batch SLA arithmetic: what submission cadence guarantees a 30-hour SLA
       given a 24-hour processing window?

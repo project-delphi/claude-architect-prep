@@ -12,9 +12,9 @@ Reference: [claudecertificationguide.com/learn/1-agentic-architecture](https://c
 | 1.1 | Design and implement agentic loops for autonomous task execution | ✅ #1 |
 | 1.2 | Orchestrate multi-agent systems with coordinator-subagent patterns | ✅ #2 |
 | 1.3 | Configure subagent invocation, context passing, and spawning | ✅ #2 |
-| 1.4 | Implement multi-step workflows with enforcement and handoff patterns | ⬜ |
+| 1.4 | Implement multi-step workflows with enforcement and handoff patterns | ✅ #26 |
 | 1.5 | Apply Agent SDK hooks for tool call interception and data normalization | ✅ #11 |
-| 1.6 | Design task decomposition strategies for complex workflows | ⬜ |
+| 1.6 | Design task decomposition strategies for complex workflows | ✅ #15 |
 | 1.7 | Manage session state, resumption, and forking | ✅ #12 |
 
 ## Contents
@@ -74,12 +74,12 @@ labelled in the source:
 
 ## Open questions for the sprint
 
-- [ ] TS 1.4 — programmatic prerequisite gates vs. prompt instructions. When is
+- [x] TS 1.4 — tracked as #26: programmatic prerequisite gates vs. prompt instructions. When is
       "non-zero failure rate" unacceptable? (Sample Q1: identity verification
       before financial operations → **programmatic enforcement**.)
 - [x] TS 1.5 — tracked as #11: `PostToolUse` normalisation and policy
       interception hooks.
-- [ ] TS 1.6 — fixed prompt chaining vs. dynamic adaptive decomposition.
+- [x] TS 1.6 — tracked as #15: fixed prompt chaining vs. dynamic adaptive decomposition.
 - [x] TS 1.7 — tracked as #12: `--resume <name>` vs `fork_session`, and when a
       fresh session with an injected summary beats resuming on stale results.
 - [ ] Coordinator decomposition failure mode (Sample Q7): overly narrow

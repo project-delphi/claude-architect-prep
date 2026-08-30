@@ -11,10 +11,10 @@ Reference: [claudecertificationguide.com/learn/5-context-management](https://cla
 | TS | Title | Issue |
 |---|---|---|
 | 5.1 | Manage conversation context across long interactions | ✅ #9 |
-| 5.2 | Design effective escalation and ambiguity resolution patterns | ⬜ |
-| 5.3 | Implement error propagation strategies across multi-agent systems | ⬜ |
-| 5.4 | Manage context effectively in large codebase exploration | ⬜ |
-| 5.5 | Design human review workflows and confidence calibration | ⬜ |
+| 5.2 | Design effective escalation and ambiguity resolution patterns | ✅ #24 |
+| 5.3 | Implement error propagation strategies across multi-agent systems | ✅ #16 |
+| 5.4 | Manage context effectively in large codebase exploration | ✅ #23 |
+| 5.5 | Design human review workflows and confidence calibration | ✅ #25 |
 | 5.6 | Preserve information provenance and handle uncertainty in synthesis | ✅ #14 |
 
 ## Planned contents
@@ -73,8 +73,8 @@ validation set before reducing human review.
 
 ## Open questions for the sprint
 
-- [ ] TS 5.4 — scratchpad files and structured state manifests for crash
+- [x] TS 5.4 — tracked as #23: scratchpad files and structured state manifests for crash
       recovery; when to `/compact`.
-- [ ] TS 5.5 — routing by field-level confidence when reviewer capacity is fixed.
+- [x] TS 5.5 — tracked as #25: routing by field-level confidence when reviewer capacity is fixed.
 - [x] TS 5.6 — tracked as #14: claim→source mappings, conflicting statistics,
       and rendering by content type rather than flattening to one format.

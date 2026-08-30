@@ -5,15 +5,29 @@
 # Idempotent: every step tolerates "already exists", so re-running is safe and
 # will not duplicate anything.
 #
-#   ./scripts/bootstrap_issues.sh                    # the 10 sprint issues
+#   ./scripts/bootstrap_issues.sh                    # the 10 core sprint issues
 #   ./scripts/bootstrap_issues.sh --with-gap-issues  # + 4 coverage-gap issues
+#   ./scripts/bootstrap_issues.sh --with-secondary   # + 12 secondary issues
+#   ./scripts/bootstrap_issues.sh --all              # all 26
+#
+# Secondary issues pair a task statement with the day whose primary issue is
+# topically closest. They are reading/reasoning checkpoints, not extra builds -
+# the primary issue owns that day's build time.
 #
 # Requires: gh (authenticated), and an existing GitHub remote.
 
 set -euo pipefail
 
 WITH_GAPS=0
-[[ "${1:-}" == "--with-gap-issues" ]] && WITH_GAPS=1
+WITH_SECONDARY=0
+for arg in "$@"; do
+  case "$arg" in
+    --with-gap-issues) WITH_GAPS=1 ;;
+    --with-secondary)  WITH_SECONDARY=1 ;;
+    --all)             WITH_GAPS=1; WITH_SECONDARY=1 ;;
+    *) echo "Unknown option: $arg" >&2; exit 2 ;;
+  esac
+done
 
 REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
 echo "Repository: $REPO"
@@ -39,6 +53,7 @@ add_label "domain-5-context"     "FBCA04" "Domain 5 - Context Management & Relia
 add_label "topic:review"         "BFDADC" "Cross-domain review and audit work"
 add_label "topic:exam-prep"      "B60205" "Mock exams and remediation"
 add_label "coverage-gap"         "E4E669" "Task statement with no dedicated sprint issue"
+add_label "secondary"            "C5DEF5" "Studied alongside that day's primary issue; not a separate build"
 
 # --------------------------------------------------------------------------
 # Milestones - GitHub issues have no due-date field, so each deadline becomes a
@@ -59,8 +74,9 @@ declare -a MILESTONES=(
   "2026-09-12|Day 13 - Mock exam"
 )
 
-# The three open slack days only get milestones when gap issues are filed.
-if [[ $WITH_GAPS -eq 1 ]]; then
+# The three open slack days get milestones when either extra batch is filed -
+# both the gap issues and several secondary issues land on them.
+if [[ $WITH_GAPS -eq 1 || $WITH_SECONDARY -eq 1 ]]; then
   MILESTONES+=(
     "2026-09-07|Day 8 - Domain 1 gaps"
     "2026-09-09|Day 10 - Domain 3 gaps"
@@ -87,6 +103,10 @@ milestone_for() {  # date -> title
   for entry in "${MILESTONES[@]}"; do
     [[ "${entry%%|*}" == "$1" ]] && { echo "Due $1 - ${entry##*|}"; return; }
   done
+  # `gh issue create --milestone ""` silently leaves the milestone unset, which
+  # would quietly strip the deadline this whole tracker exists to enforce.
+  echo "No milestone defined for due date $1" >&2
+  return 1
 }
 
 # --------------------------------------------------------------------------
@@ -403,6 +423,233 @@ Domain 5 is a primary domain in 4 of the 6 exam scenarios despite its 15% weight
 
 ### Evidence
 Close with a link to the commit."
+fi
+
+# --------------------------------------------------------------------------
+# Secondary issues - the remaining 12 task statements.
+#
+# All 14 sprint days are already allocated, so these do NOT get their own days.
+# Each is paired with the day whose primary issue is topically closest, to be
+# studied alongside it. Labelled `secondary` so the tracker keeps the
+# distinction between "build this" and "understand this".
+# --------------------------------------------------------------------------
+if [[ $WITH_SECONDARY -eq 1 ]]; then
+  echo "Secondary issues:"
+
+  create_issue \
+    "Design task decomposition strategies for complex workflows" \
+    "domain-1-agentic,secondary" "2026-09-01" \
+"**Domain:** 1 — Agentic Architecture & Orchestration (27%)
+**Task statement:** 1.6 · **Secondary** — study alongside [#2] on sprint day 2
+**Directory:** \`01-agentic-loops/\`
+
+### Understand
+- [ ] Fixed sequential pipelines (**prompt chaining**) vs **dynamic adaptive** decomposition driven by intermediate findings.
+- [ ] Prompt chaining for predictable multi-aspect work: analyse each file individually, then a separate cross-file integration pass.
+- [ ] Adaptive plans that generate subtasks from what each step discovers.
+
+### Apply
+- [ ] Split a large review into per-file local passes plus a cross-file integration pass, and observe the attention-dilution problem it solves.
+- [ ] Decompose an open-ended task (\"add comprehensive tests to a legacy codebase\"): map structure first, identify high-impact areas, then build a prioritised plan that adapts as dependencies surface.
+
+### Exam angle
+Which decomposition pattern fits which workflow shape — predictable vs open-ended."
+
+  create_issue \
+    "Implement error propagation strategies across multi-agent systems" \
+    "domain-5-context,secondary" "2026-09-01" \
+"**Domain:** 5 — Context Management & Reliability (15%)
+**Task statement:** 5.3 · **Secondary** — study alongside [#2] on sprint day 2
+**Directory:** \`05-context-reliability/\`
+
+### Understand
+- [ ] Structured error context — failure type, attempted query, partial results, alternatives — is what lets a coordinator recover intelligently.
+- [ ] **Access failure** (timeout, needs a retry decision) vs **valid empty result** (query succeeded, nothing matched). Conflating these is a recurring wrong answer.
+- [ ] Generic statuses (\"search unavailable\") hide exactly the context the coordinator needs.
+
+### Two anti-patterns
+- [ ] Silently suppressing errors — returning empty results as success.
+- [ ] Terminating the whole workflow on a single subagent failure.
+
+### Apply
+- [ ] Subagents recover locally from transient faults, propagating only what they cannot resolve, with what was attempted and any partial results.
+- [ ] Annotate synthesis output with coverage gaps where sources were unavailable."
+
+  create_issue \
+    "Create and configure custom slash commands and skills" \
+    "domain-3-claude-code,secondary" "2026-09-02" \
+"**Domain:** 3 — Claude Code Configuration & Workflows (20%)
+**Task statement:** 3.2 · **Secondary** — study alongside [#3] on sprint day 3
+**Directory:** \`03-claude-code/\`
+
+### Apply
+- [ ] Project-scoped command in \`.claude/commands/\` — version-controlled, available to everyone on clone (Sample Q4). Contrast with \`~/.claude/commands/\`, which is personal and not shared.
+- [ ] A skill in \`.claude/skills/\` with \`SKILL.md\` frontmatter using \`context: fork\`; confirm its verbose output stays out of the main conversation.
+- [ ] \`allowed-tools\` in frontmatter restricting tool access during execution.
+- [ ] \`argument-hint\` prompting for parameters when invoked bare.
+- [ ] A personal variant in \`~/.claude/skills/\` under a different name, so teammates are unaffected.
+
+### Decide
+- [ ] Skills (on-demand, task-specific) vs \`CLAUDE.md\` (always-loaded, universal). Write down which belongs where and why."
+
+  create_issue \
+    "Select and apply built-in tools effectively" \
+    "domain-2-mcp,secondary" "2026-09-05" \
+"**Domain:** 2 — Tool Design & MCP Integration (18%)
+**Task statement:** 2.5 · **Secondary** — study alongside [#6] on sprint day 6
+**Directory:** \`02-mcp-servers/\`
+
+### The selection rules
+- [ ] **Grep** — content search: function names, error messages, import statements.
+- [ ] **Glob** — path patterns: \`**/*.test.tsx\`.
+- [ ] **Read/Write** — full file operations. **Edit** — targeted change via unique text match.
+- [ ] When Edit fails on non-unique text, fall back to Read + Write.
+
+### Apply
+- [ ] Build codebase understanding **incrementally**: Grep for entry points, then Read to follow imports and trace flows — not reading every file upfront.
+- [ ] Trace a function across wrapper modules: identify all exported names first, then search each name.
+
+### Exam angle
+Given a concrete search task, which built-in tool is correct — and why the others waste context."
+
+  create_issue \
+    "Design prompts with explicit criteria to reduce false positives" \
+    "domain-4-prompt,secondary" "2026-09-06" \
+"**Domain:** 4 — Prompt Engineering & Structured Output (20%)
+**Task statement:** 4.1 · **Secondary** — study alongside [#7] on sprint day 7
+**Directory:** \`04-prompt-engineering/\`
+
+### The core distinction
+- [ ] Specific categorical criteria beat vague instruction. \"Flag comments only when claimed behaviour contradicts actual code behaviour\" works; \"check that comments are accurate\" does not.
+- [ ] \"Be conservative\" and \"only report high-confidence findings\" **fail** — they do not improve precision.
+- [ ] A high false-positive category undermines trust in the categories that are accurate.
+
+### Apply
+- [ ] Write review criteria naming what to report (bugs, security) and what to skip (minor style, local patterns), instead of confidence-based filtering.
+- [ ] Temporarily disable a high-false-positive category to restore trust while its prompt is improved.
+- [ ] Define severity levels with a concrete code example for each."
+
+  create_issue \
+    "Apply few-shot prompting to improve output consistency" \
+    "domain-4-prompt,secondary" "2026-09-08" \
+"**Domain:** 4 — Prompt Engineering & Structured Output (20%)
+**Task statement:** 4.2 · **Secondary** — study alongside [#8] on sprint day 9
+**Directory:** \`04-prompt-engineering/\`
+
+### Understand
+- [ ] Few-shot is the most effective lever for consistently formatted, actionable output once detailed instructions have failed.
+- [ ] Examples let the model **generalise judgment** to novel patterns, rather than matching only the cases you listed.
+- [ ] Few-shot reduces hallucination in extraction from varied document structures.
+
+### Apply
+- [ ] 2–4 targeted examples for ambiguous cases that show the **reasoning** for choosing one action over a plausible alternative.
+- [ ] Examples demonstrating the exact output shape (location, issue, severity, suggested fix).
+- [ ] Examples distinguishing acceptable patterns from genuine issues, to cut false positives without killing generalisation.
+- [ ] Examples spanning structural variety: inline citations vs bibliographies, narrative vs tabular.
+
+### The counter-case
+- [ ] Sample Q2: when the root cause is a thin **tool description**, few-shot adds token overhead without fixing anything. Match the technique to the actual cause."
+
+  create_issue \
+    "Implement validation, retry, and feedback loops for extraction quality" \
+    "domain-4-prompt,secondary" "2026-09-08" \
+"**Domain:** 4 — Prompt Engineering & Structured Output (20%)
+**Task statement:** 4.4 · **Secondary** — study alongside [#8] on sprint day 9
+**Directory:** \`04-prompt-engineering/\`
+
+### Apply
+- [ ] Retry-with-error-feedback: resend the original document, the failed extraction, and the **specific** validation error.
+- [ ] Self-correction validation: extract \`calculated_total\` alongside \`stated_total\` to surface discrepancies; add a \`conflict_detected\` boolean for inconsistent sources.
+- [ ] Add a \`detected_pattern\` field to findings so dismissal patterns become analysable.
+
+### Know the limit
+- [ ] Retries fix **format and structural** errors. They cannot conjure information that is absent from the source document. Classify a set of real failures into retryable and not — this judgment is the exam-relevant skill.
+- [ ] Semantic errors (values don't sum, wrong field) vs schema syntax errors (already eliminated by tool use)."
+
+  create_issue \
+    "Apply iterative refinement techniques for progressive improvement" \
+    "domain-3-claude-code,secondary" "2026-09-09" \
+"**Domain:** 3 — Claude Code Configuration & Workflows (20%)
+**Task statement:** 3.5 · **Secondary** — study alongside [#13] on sprint day 10
+**Directory:** \`03-claude-code/\`
+
+### Apply
+- [ ] Provide 2–3 concrete input/output examples where a prose description produced inconsistent results.
+- [ ] Test-driven iteration: write the suite first (expected behaviour, edge cases, performance), then iterate by sharing failures.
+- [ ] The **interview pattern** — have Claude ask questions first to surface considerations you had not anticipated (cache invalidation, failure modes) before implementing in an unfamiliar domain.
+- [ ] Fix an edge case by supplying a specific test case with input and expected output (e.g. nulls in a migration script).
+
+### Decide
+- [ ] All issues in **one** message when the fixes interact; **sequentially** when the problems are independent."
+
+  create_issue \
+    "Manage context effectively in large codebase exploration" \
+    "domain-5-context,secondary" "2026-09-10" \
+"**Domain:** 5 — Context Management & Reliability (15%)
+**Task statement:** 5.4 · **Secondary** — study alongside [#9] on sprint day 11
+**Directory:** \`05-context-reliability/\`
+
+### The failure mode
+- [ ] Context degradation in extended sessions: answers turn inconsistent and start referencing \"typical patterns\" instead of the specific classes discovered earlier. Learn to recognise this in your own transcripts.
+
+### Apply
+- [ ] Spawn subagents for specific questions (\"find all test files\", \"trace refund flow dependencies\") while the main agent keeps high-level coordination.
+- [ ] Maintain **scratchpad files** of key findings and reference them later to counteract degradation.
+- [ ] Summarise one exploration phase before spawning the next, injecting the summary into initial context.
+- [ ] Design crash recovery via structured state exports — each agent writes a manifest the coordinator loads on resume.
+- [ ] Use \`/compact\` when context fills with verbose discovery output."
+
+  create_issue \
+    "Design effective escalation and ambiguity resolution patterns" \
+    "domain-5-context,secondary" "2026-09-11" \
+"**Domain:** 5 — Context Management & Reliability (15%)
+**Task statement:** 5.2 · **Secondary** — study alongside [#14] on sprint day 12
+**Directory:** \`05-context-reliability/\`
+
+### The three legitimate triggers
+- [ ] The customer explicitly asks for a human — honour it **immediately**, do not investigate first.
+- [ ] Policy is ambiguous or silent on the request (e.g. competitor price matching when policy covers only own-site adjustments).
+- [ ] The agent cannot make meaningful progress.
+
+### The two unreliable proxies
+- [ ] **Sentiment** does not correlate with case complexity.
+- [ ] **Self-reported confidence** is poorly calibrated — an agent already wrong on hard cases is confidently wrong (Sample Q3).
+
+### Apply
+- [ ] Explicit escalation criteria in the system prompt with few-shot examples of escalate vs resolve.
+- [ ] Acknowledge frustration while offering resolution when it is within capability; escalate if the customer reiterates.
+- [ ] On multiple tool matches, ask for an additional identifier rather than picking heuristically."
+
+  create_issue \
+    "Design human review workflows and confidence calibration" \
+    "domain-5-context,secondary" "2026-09-11" \
+"**Domain:** 5 — Context Management & Reliability (15%)
+**Task statement:** 5.5 · **Secondary** — study alongside [#14] on sprint day 12
+**Directory:** \`05-context-reliability/\`
+
+### The trap
+- [ ] An aggregate accuracy figure (97%) can hide poor performance on one document type or one field. Segment before you trust it.
+
+### Apply
+- [ ] Stratified random sampling of **high-confidence** extractions for ongoing error-rate measurement and novel-pattern detection.
+- [ ] Analyse accuracy by document type **and** field before reducing human review anywhere.
+- [ ] Have the model emit field-level confidence scores; calibrate the review threshold against a **labelled validation set** rather than intuition.
+- [ ] Route low-confidence or contradictory-source extractions to human review, prioritising finite reviewer capacity."
+
+  create_issue \
+    "Implement multi-step workflows with enforcement and handoff patterns" \
+    "domain-1-agentic,secondary" "2026-09-07" \
+"**Domain:** 1 — Agentic Architecture & Orchestration (27%)
+**Task statement:** 1.4 · **Secondary** — study alongside [#11] on sprint day 8
+**Directory:** \`01-agentic-loops/\`
+
+### The core principle
+- [ ] Programmatic enforcement (hooks, prerequisite gates) vs prompt-based guidance. Where deterministic compliance is required — identity verification before a financial operation — **prompt instructions alone have a non-zero failure rate**, and that is disqualifying once money moves.
+
+### Apply
+- [ ] A prerequisite gate blocking downstream calls until a precondition is met: no \`process_refund\` until \`get_customer\` has returned a verified id (Sample Q1).
+- [ ] Decompose a multi-concern request into distinct items, investigate each in parallel over shared context, then synthesise one unified resolution.
+- [ ] Compile a structured handoff summary — customer id, root cause, refund amount, recommended action — for a human who cannot see the conversation transcript."
 fi
 
 echo
