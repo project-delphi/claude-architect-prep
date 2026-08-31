@@ -1,0 +1,158 @@
+---
+title: "The exam"
+subtitle: "Blueprint, scenarios, and the full 30-of-30 coverage matrix."
+---
+
+Source: *Claude Certified Architect – Foundations Exam Guide*, v1.0, effective
+July 2026. Anthropic notes the guide is subject to change — re-check before
+booking.
+
+## Structure
+
+| | |
+|---|---|
+| Exam code | **CCAR-F** |
+| Items | **60** |
+| Item format | Multiple-choice and multiple-response; each item states how many responses to select |
+| Structure | **4 scenarios drawn from a bank of 6** |
+| Time limit | **120 minutes** |
+| Delivery | Proctored — online and/or test centre, per program policy |
+| Passing score | **Scaled 720** on a 100–1,000 scale |
+| Fee | $125 USD |
+| Validity | 12 months from award |
+| Result reporting | Pass/fail with scaled score, **plus percent-correct by domain** |
+
+## Domain weightings
+
+| Domain | Weight | Task statements | Directory |
+|---|---|---|---|
+| [1 — Agentic Architecture & Orchestration](domains/01-agentic-loops.qmd) | **27%** | 1.1 – 1.7 (7) | `01-agentic-loops/` |
+| [2 — Tool Design & MCP Integration](domains/02-mcp-servers.qmd) | **18%** | 2.1 – 2.5 (5) | `02-mcp-servers/` |
+| [3 — Claude Code Configuration & Workflows](domains/03-claude-code.qmd) | **20%** | 3.1 – 3.6 (6) | `03-claude-code/` |
+| [4 — Prompt Engineering & Structured Output](domains/04-prompt-engineering.qmd) | **20%** | 4.1 – 4.6 (6) | `04-prompt-engineering/` |
+| [5 — Context Management & Reliability](domains/05-context-reliability.qmd) | **15%** | 5.1 – 5.6 (6) | `05-context-reliability/` |
+
+Because the score report breaks down **by domain**, the repository directories
+are numbered to match — a weak domain N points straight at directory `0N-`.
+
+## The 6 exam scenarios
+
+Items are scenario-framed; 4 of these 6 appear in any given sitting.
+
+| # | Scenario | Primary domains |
+|---|---|---|
+| 1 | Customer Support Resolution Agent | 1, 2, 5 |
+| 2 | Code Generation with Claude Code | 3, 5 |
+| 3 | Multi-Agent Research System | 1, 2, 5 |
+| 4 | Developer Productivity with Claude | 2, 3, 1 |
+| 5 | Claude Code for Continuous Integration | 3, 4 |
+| 6 | Structured Data Extraction | 4, 5 |
+
+Domain 5 (Context Management & Reliability) is a primary domain in **4 of the 6
+scenarios** despite carrying the lowest weight — it is the connective tissue, not
+a corner case.
+
+## Task-statement coverage matrix
+
+All 30 task statements against the sprint's issues. ✅ = a dedicated issue; each
+number links to the live issue.
+
+### Domain 1 — Agentic Architecture & Orchestration (27%)
+
+| TS | Title | Issue |
+|---|---|---|
+| 1.1 | Design and implement agentic loops for autonomous task execution | ✅ [#1](https://github.com/project-delphi/claude-architect-prep/issues/1) |
+| 1.2 | Orchestrate multi-agent systems with coordinator-subagent patterns | ✅ [#2](https://github.com/project-delphi/claude-architect-prep/issues/2) |
+| 1.3 | Configure subagent invocation, context passing, and spawning | ✅ [#2](https://github.com/project-delphi/claude-architect-prep/issues/2) |
+| 1.4 | Implement multi-step workflows with enforcement and handoff patterns | ✅ [#26](https://github.com/project-delphi/claude-architect-prep/issues/26) |
+| 1.5 | Apply Agent SDK hooks for tool call interception and data normalization | ✅ [#11](https://github.com/project-delphi/claude-architect-prep/issues/11) |
+| 1.6 | Design task decomposition strategies for complex workflows | ✅ [#15](https://github.com/project-delphi/claude-architect-prep/issues/15) |
+| 1.7 | Manage session state, resumption, and forking | ✅ [#12](https://github.com/project-delphi/claude-architect-prep/issues/12) |
+
+### Domain 2 — Tool Design & MCP Integration (18%)
+
+| TS | Title | Issue |
+|---|---|---|
+| 2.1 | Design effective tool interfaces with clear descriptions and boundaries | ✅ [#6](https://github.com/project-delphi/claude-architect-prep/issues/6) |
+| 2.2 | Implement structured error responses for MCP tools | ✅ [#5](https://github.com/project-delphi/claude-architect-prep/issues/5) |
+| 2.3 | Distribute tools appropriately across agents and configure tool choice | ✅ [#6](https://github.com/project-delphi/claude-architect-prep/issues/6) |
+| 2.4 | Integrate MCP servers into Claude Code and agent workflows | ✅ [#5](https://github.com/project-delphi/claude-architect-prep/issues/5) |
+| 2.5 | Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) | ✅ [#18](https://github.com/project-delphi/claude-architect-prep/issues/18) |
+
+### Domain 3 — Claude Code Configuration & Workflows (20%)
+
+| TS | Title | Issue |
+|---|---|---|
+| 3.1 | Configure CLAUDE.md files with hierarchy, scoping, modular organization | ✅ [#3](https://github.com/project-delphi/claude-architect-prep/issues/3) |
+| 3.2 | Create and configure custom slash commands and skills | ✅ [#17](https://github.com/project-delphi/claude-architect-prep/issues/17) |
+| 3.3 | Apply path-specific rules for conditional convention loading | ✅ [#3](https://github.com/project-delphi/claude-architect-prep/issues/3) |
+| 3.4 | Determine when to use plan mode vs direct execution | ✅ [#13](https://github.com/project-delphi/claude-architect-prep/issues/13) |
+| 3.5 | Apply iterative refinement techniques for progressive improvement | ✅ [#22](https://github.com/project-delphi/claude-architect-prep/issues/22) |
+| 3.6 | Integrate Claude Code into CI/CD pipelines | ✅ [#4](https://github.com/project-delphi/claude-architect-prep/issues/4), [#7](https://github.com/project-delphi/claude-architect-prep/issues/7) |
+
+### Domain 4 — Prompt Engineering & Structured Output (20%)
+
+| TS | Title | Issue |
+|---|---|---|
+| 4.1 | Design prompts with explicit criteria to reduce false positives | ✅ [#19](https://github.com/project-delphi/claude-architect-prep/issues/19) |
+| 4.2 | Apply few-shot prompting to improve output consistency | ✅ [#20](https://github.com/project-delphi/claude-architect-prep/issues/20) |
+| 4.3 | Enforce structured output using tool use and JSON schemas | ✅ [#8](https://github.com/project-delphi/claude-architect-prep/issues/8) |
+| 4.4 | Implement validation, retry, and feedback loops for extraction quality | ✅ [#21](https://github.com/project-delphi/claude-architect-prep/issues/21) |
+| 4.5 | Design efficient batch processing strategies | ✅ [#8](https://github.com/project-delphi/claude-architect-prep/issues/8) |
+| 4.6 | Design multi-instance and multi-pass review architectures | ✅ [#7](https://github.com/project-delphi/claude-architect-prep/issues/7) |
+
+### Domain 5 — Context Management & Reliability (15%)
+
+| TS | Title | Issue |
+|---|---|---|
+| 5.1 | Manage conversation context across long interactions | ✅ [#9](https://github.com/project-delphi/claude-architect-prep/issues/9) |
+| 5.2 | Design effective escalation and ambiguity resolution patterns | ✅ [#24](https://github.com/project-delphi/claude-architect-prep/issues/24) |
+| 5.3 | Implement error propagation strategies across multi-agent systems | ✅ [#16](https://github.com/project-delphi/claude-architect-prep/issues/16) |
+| 5.4 | Manage context effectively in large codebase exploration | ✅ [#23](https://github.com/project-delphi/claude-architect-prep/issues/23) |
+| 5.5 | Design human review workflows and confidence calibration | ✅ [#25](https://github.com/project-delphi/claude-architect-prep/issues/25) |
+| 5.6 | Preserve information provenance and handle uncertainty in synthesis | ✅ [#14](https://github.com/project-delphi/claude-architect-prep/issues/14) |
+
+## Issue tiers
+
+**Score: 30 of 30 task statements tracked**, across 26 issues in three tiers:
+
+| Tier | Label | Count | What it means |
+|---|---|---|---|
+| Core | *(domain label only)* | 10 | Owns its day. A build with committed artefacts. |
+| Gap | `coverage-gap` | 4 | Owns its day. Filed to close Domain 1/3/5 holes. |
+| Secondary | `secondary` | 12 | **Shares** a day with the primary issue above it. Reading and reasoning, not a separate build. |
+
+The tiers are what make the over-commitment survivable — see
+[Sprint plan](sprint.qmd) for how the hours actually divide.
+
+## Reference material
+
+**Official**
+
+- Exam guide — *Claude Certified Architect – Foundations*, v1.0 (July 2026)
+- [Preparation courses](https://anthropic-partners.skilljar.com/claude-certified-architect-foundations-certification#ccarf-prep) (completed)
+- [Anthropic docs](https://docs.claude.com) · [Claude Code docs](https://code.claude.com/docs)
+
+**Third-party** — none affiliated with or endorsed by Anthropic.
+
+- [claudecertificationguide.com](https://claudecertificationguide.com/) — free, no
+  sign-up. 30 lessons matching the 30 task statements 1:1, 250+ practice
+  questions, and a 60-question/120-minute mock exam. Per-domain pages line up
+  with this site's domain pages:
+  [D1](https://claudecertificationguide.com/learn/1-agentic-architecture) ·
+  [D2](https://claudecertificationguide.com/learn/2-tool-design-mcp) ·
+  [D3](https://claudecertificationguide.com/learn/3-claude-code-config) ·
+  [D4](https://claudecertificationguide.com/learn/4-prompt-engineering) ·
+  [D5](https://claudecertificationguide.com/learn/5-context-management)
+- [aicertificationprep.com](https://aicertificationprep.com/) — free mock exams
+  and study guides covering Architect Foundations. Listed as secondary; only its
+  landing page was verifiable.
+
+::: {.callout-caution}
+## A note on practice-question sources
+
+Both sites above state they publish original, blueprint-aligned questions rather
+than reproduced exam items. Any site offering recalled *live* exam content
+("dumps") breaches the certification agreement and risks your credential —
+verify a source's claims before using it.
+:::

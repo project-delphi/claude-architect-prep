@@ -1,0 +1,174 @@
+// Shared rules for both schemes. Every colour resolves through a variable that
+// each scheme defines, so nothing here needs a light/dark branch of its own.
+
+// Tables carry most of this site's content — the blueprint is almost entirely
+// tabular — so they get slightly more room than Bootstrap's default.
+table {
+  font-size: 0.94em;
+}
+
+thead th {
+  border-bottom-width: 2px !important;
+}
+
+// Wide blueprint tables scroll inside their own container rather than pushing
+// the page sideways.
+.cell-output-display > table,
+.table-responsive {
+  overflow-x: auto;
+}
+
+// Blog listing: category badges.
+.listing-category,
+.quarto-category {
+  border-color: var(--ccar-neutral) !important;
+  color: var(--ccar-neutral) !important;
+  text-transform: none !important;
+  font-size: 0.75em;
+  letter-spacing: 0.01em;
+}
+
+// Per-domain colours. Quarto emits no attribute naming the category, so
+// includes/category-colours.html stamps [data-ccar-domain] from the badge text.
+@each $n, $var in (1: --ccar-d1, 2: --ccar-d2, 3: --ccar-d3, 4: --ccar-d4, 5: --ccar-d5) {
+  [data-ccar-domain="#{$n}"] {
+    border-color: var(#{$var}) !important;
+    color: var(#{$var}) !important;
+  }
+}
+
+// The sprint calendar and coverage matrix use ✅/⬜ as status markers; keep them
+// from being squeezed by the surrounding table padding.
+td:first-child,
+th:first-child {
+  white-space: nowrap;
+}
+
+// Callouts carry the two load-bearing warnings from the README. Give them room.
+.callout {
+  margin-top: 1.4rem;
+  margin-bottom: 1.4rem;
+}
+
+figure figcaption {
+  color: var(--ccar-neutral);
+}
+
+// ---------------------------------------------------------------------------
+// Effort-delta chart (sprint.qmd) — a diverging bar, zero-anchored.
+// Structure only; every colour resolves through a --ccar-* token that each
+// scheme defines, so this block is written once and is correct in both.
+// ---------------------------------------------------------------------------
+.ccar-delta {
+  background: var(--ccar-surface);
+  border: 1px solid var(--ccar-grid);
+  border-radius: 6px;
+  padding: 1.1rem 1.2rem 0.9rem;
+  margin: 1.4rem 0;
+  font-size: 0.86rem;
+}
+
+.ccar-delta__row {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr 4.2rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.28rem 0;
+  position: relative;
+}
+
+.ccar-delta__label {
+  color: var(--ccar-ink);
+  text-align: right;
+  white-space: nowrap;
+}
+
+// The track carries the zero line; bars are anchored to its midpoint.
+.ccar-delta__track {
+  position: relative;
+  height: 22px;
+}
+
+.ccar-delta__track::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -0.28rem;
+  bottom: -0.28rem;
+  width: 1px;
+  background: var(--ccar-grid);
+}
+
+.ccar-delta__bar {
+  position: absolute;
+  top: 3px;
+  height: 16px;
+  width: var(--w);
+}
+
+// 4px rounded data-end; the end touching zero stays square.
+.ccar-delta__bar--neg {
+  right: 50%;
+  background: var(--ccar-neg);
+  border-radius: 4px 0 0 4px;
+}
+
+.ccar-delta__bar--pos {
+  left: 50%;
+  background: var(--ccar-pos);
+  border-radius: 0 4px 4px 0;
+}
+
+// The value gets its own column rather than sitting at the bar end, so a long
+// bar can never collide with its own label.
+.ccar-delta__value {
+  color: var(--ccar-ink);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+
+// Hover layer: the whole row is the hit target, not the bar.
+.ccar-delta__row:hover { background: rgba(127, 127, 127, 0.08); }
+
+.ccar-delta__tip {
+  position: absolute;
+  left: 9.25rem;
+  bottom: calc(100% - 0.2rem);
+  z-index: 5;
+  display: none;
+  background: var(--ccar-tooltip-bg);
+  color: var(--ccar-tooltip-ink);
+  padding: 0.4rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+.ccar-delta__row:hover .ccar-delta__tip,
+.ccar-delta__row:focus-within .ccar-delta__tip { display: block; }
+
+.ccar-delta__axis {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ccar-neutral);
+  font-size: 0.76rem;
+  margin: 0.5rem 0 0 9.25rem;
+  border-top: 1px solid var(--ccar-grid);
+  padding-top: 0.3rem;
+}
+
+.ccar-delta__caption {
+  color: var(--ccar-neutral);
+  font-size: 0.78rem;
+  margin-top: 0.6rem;
+}
+
+@media (max-width: 575px) {
+  .ccar-delta__row { grid-template-columns: 5rem 1fr 3.6rem; }
+  .ccar-delta__tip { left: 0; white-space: normal; }
+  .ccar-delta__axis { margin-left: 6.25rem; }
+}

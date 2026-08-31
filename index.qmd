@@ -1,0 +1,74 @@
+---
+title: "CCAR-F Study Sprint"
+subtitle: "Two weeks, 4 h/day, 56 hours — against the official exam blueprint."
+toc: false
+---
+
+This is a **public, dated study sprint** for the Claude Certified Architect –
+Foundations exam, not a set of notes. The repository is structured by the exam
+blueprint, tracked with GitHub issues carrying real deadlines, and anchored by
+working code rather than prose. Every day of the sprint has an issue, a
+milestone with a due date, and a [log entry](blog/index.qmd) recording what it
+actually cost.
+
+**Sprint window: 2026-09-06 → 2026-09-19** · 14 days · 4 h/day · **56 h**\
+Candidate: [@project-delphi](https://github.com/project-delphi)
+
+## The exam at a glance
+
+| | |
+|---|---|
+| Exam code | **CCAR-F** |
+| Items | **60** |
+| Item format | Multiple-choice and multiple-response; each item states how many responses to select |
+| Structure | **4 scenarios drawn from a bank of 6** |
+| Time limit | **120 minutes** |
+| Delivery | Proctored — online and/or test centre, per program policy |
+| Passing score | **Scaled 720** on a 100–1,000 scale |
+| Fee | $125 USD |
+| Validity | 12 months from award |
+| Result reporting | Pass/fail with scaled score, **plus percent-correct by domain** |
+
+Because the score report breaks down **by domain**, the repository directories
+are numbered to match the official domains — a weak domain N points straight at
+directory `0N-`. Full detail on [The exam](exam.qmd).
+
+## The five domains
+
+| Domain | Weight | Task statements | Directory |
+|---|---|---|---|
+| [1 — Agentic Architecture & Orchestration](domains/01-agentic-loops.qmd) | **27%** | 1.1 – 1.7 (7) | `01-agentic-loops/` |
+| [2 — Tool Design & MCP Integration](domains/02-mcp-servers.qmd) | **18%** | 2.1 – 2.5 (5) | `02-mcp-servers/` |
+| [3 — Claude Code Configuration & Workflows](domains/03-claude-code.qmd) | **20%** | 3.1 – 3.6 (6) | `03-claude-code/` |
+| [4 — Prompt Engineering & Structured Output](domains/04-prompt-engineering.qmd) | **20%** | 4.1 – 4.6 (6) | `04-prompt-engineering/` |
+| [5 — Context Management & Reliability](domains/05-context-reliability.qmd) | **15%** | 5.1 – 5.6 (6) | `05-context-reliability/` |
+
+**Domain 1 alone is 27% — more than any other, and the largest at 7 task
+statements.** Budget accordingly.
+
+::: {.callout-warning}
+## This is an over-committed sprint, by construction
+
+26 issues across 14 days at 4 h/day is 56 h against roughly 90 h of work if
+every issue were a build. That is why the 12 secondary issues are labelled and
+scoped as comprehension checkpoints — each is paired with the day whose primary
+issue is topically closest, so it is studied *alongside* related material rather
+than competing for build time. If a day runs long, **the secondary issue is what
+slips.** Track completion against the 14 core-plus-gap issues; treat the 12
+secondary ones as a reading list with deadlines attached.
+:::
+
+## Where to go next
+
+| | |
+|---|---|
+| [The exam](exam.qmd) | Blueprint, the 6 scenarios, and the full 30-of-30 task-statement coverage matrix with live issue links. |
+| [Sprint plan](sprint.qmd) | The 14-day calendar, the effort-versus-weighting shortfall, and how the accountability loop works. |
+| [Sprint log](blog/index.qmd) | One post per day: the issue closed, the artifact produced, and planned versus actual hours. |
+| [Issue tracker](https://github.com/project-delphi/claude-architect-prep/issues) | 26 live issues with dated milestones. |
+
+::: {.callout-note appearance="simple"}
+Not affiliated with or endorsed by Anthropic. The exam guide referenced
+throughout is *Claude Certified Architect – Foundations*, v1.0, effective July
+2026; Anthropic notes it is subject to change — re-check before booking.
+:::

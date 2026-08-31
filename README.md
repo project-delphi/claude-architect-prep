@@ -6,6 +6,7 @@ by working code rather than notes alone.
 
 **Sprint window:** 2026-09-06 → 2026-09-19 (14 days · 4 h/day · **56 h**)
 **Candidate:** [@project-delphi](https://github.com/project-delphi)
+**Site & sprint log:** <https://project-delphi.github.io/claude-architect-prep/>
 
 ---
 
@@ -195,6 +196,27 @@ To run the orchestrator against the live API:
 export ANTHROPIC_API_KEY=sk-ant-...   # or: ant auth login
 uv run 01-agentic-loops/orchestrator.py --task "Audit the refund flow" -v
 ```
+
+To work on the site — a Quarto project at the repo root:
+
+```bash
+uv sync --group docs   # adds a Jupyter kernel for the one executable cell
+quarto preview         # live-reloading local preview
+quarto render          # build into _site/
+```
+
+The five domain pages `{{< include >}}` the domain `README.md` files verbatim,
+so the task-statement tables have exactly one source.
+
+**Publishing is manual and local — there is no CI.** The command renders, then
+force-pushes `_site/` to the `gh-pages` branch, which is what GitHub Pages
+serves:
+
+```bash
+quarto publish gh-pages
+```
+
+Run it from a clean `main` after merging, or the site will lag the source.
 
 To (re)create the tracker on GitHub — idempotent, safe to re-run:
 

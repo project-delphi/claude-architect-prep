@@ -1,0 +1,20 @@
+<script>
+  // Quarto renders blog category badges with no attribute naming the category,
+  // so the per-domain colours in styles/_shared.scss have nothing to hook onto.
+  // Tag each badge from its own text. Without JS the badges stay neutral, which
+  // is a legitimate fallback — colour is never the only cue for a category.
+  (() => {
+    const tag = () => {
+      const sel = ".listing-category, .quarto-category, .quarto-listing-category .category";
+      for (const el of document.querySelectorAll(sel)) {
+        const m = /^\s*Domain\s+([1-5])\s*$/.exec(el.textContent || "");
+        if (m) el.setAttribute("data-ccar-domain", m[1]);
+      }
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", tag);
+    } else {
+      tag();
+    }
+  })();
+</script>

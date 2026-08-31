@@ -1,0 +1,31 @@
+/*-- scss:defaults --*/
+// Primary is the `domain-1-agentic` label colour from scripts/bootstrap_issues.sh,
+// so the site and the issue tracker read as one system.
+$primary: #5319e7;
+$link-color: #5319e7;
+$body-color: #1c1c22;
+$body-bg: #ffffff;
+$border-color: #dfe1e6;
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif;
+$code-color: #b02a5b;
+
+/*-- scss:rules --*/
+// Domain palette, mirroring the GitHub label colours.
+:root {
+  --ccar-d1: #5319e7;
+  --ccar-d2: #0e8a16;
+  --ccar-d3: #1d76db;
+  --ccar-d4: #d93f0b;
+  --ccar-d5: #8a6d00; // FBCA04 is unreadable as text on white; darkened for contrast
+  --ccar-neutral: #57606a;
+  --ccar-pos: #2a78d6;      // surplus  — validated vs #ffffff, CVD ΔE 21.6 / normal 32.3
+  --ccar-neg: #e34948;      // shortfall
+  --ccar-grid: #e1e0d9;
+  --ccar-surface: #fcfcfb;
+  --ccar-ink: #0b0b0b;
+  --ccar-tooltip-bg: #1a1a19;
+  --ccar-tooltip-ink: #ffffff;
+}
+
+@import "_shared";

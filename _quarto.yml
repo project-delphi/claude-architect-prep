@@ -1,0 +1,68 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - exam.qmd
+    - sprint.qmd
+    - domains/*.qmd
+    - blog/index.qmd
+    - blog/posts/**/*.qmd
+
+website:
+  title: "CCAR-F Study Sprint"
+  description: "A 2-week, 4 h/day sprint for the Claude Certified Architect – Foundations exam"
+  site-url: https://project-delphi.github.io/claude-architect-prep/
+  repo-url: https://github.com/project-delphi/claude-architect-prep
+  repo-actions: [edit, issue]
+  search:
+    location: navbar
+    type: overlay
+  navbar:
+    title: "CCAR-F Study Sprint"
+    left:
+      - href: index.qmd
+        text: Home
+      - href: exam.qmd
+        text: The exam
+      - href: sprint.qmd
+        text: Sprint plan
+      - text: Domains
+        menu:
+          - href: domains/01-agentic-loops.qmd
+            text: "1 — Agentic loops (27%)"
+          - href: domains/02-mcp-servers.qmd
+            text: "2 — Tool design & MCP (18%)"
+          - href: domains/03-claude-code.qmd
+            text: "3 — Claude Code (20%)"
+          - href: domains/04-prompt-engineering.qmd
+            text: "4 — Prompt engineering (20%)"
+          - href: domains/05-context-reliability.qmd
+            text: "5 — Context & reliability (15%)"
+      - href: blog/index.qmd
+        text: Sprint log
+    right:
+      - icon: rss
+        href: blog/index.xml
+        aria-label: RSS feed
+      - icon: github
+        href: https://github.com/project-delphi/claude-architect-prep
+        aria-label: GitHub repository
+  page-footer:
+    left: "Not affiliated with or endorsed by Anthropic."
+    center: "Candidate: [@project-delphi](https://github.com/project-delphi)"
+    right: "Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme:
+      light: [cosmo, styles/light.scss]
+      dark: [darkly, styles/dark.scss]
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    anchor-sections: true
+    link-external-newwindow: true
+    include-after-body: includes/category-colours.html
+    df-print: kable

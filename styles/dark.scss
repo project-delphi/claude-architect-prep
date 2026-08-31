@@ -1,0 +1,35 @@
+/*-- scss:defaults --*/
+$primary: #a78bfa;
+$link-color: #a78bfa;
+$body-color: #e6e6ea;
+$body-bg: #17171c;
+$border-color: #33333d;
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif;
+$code-color: #f7a8c4;
+// A full-width band of saturated purple is too loud on a dark ground; the
+// navbar takes a raised surface instead and keeps $primary for links only.
+$navbar-bg: #1e1e24;
+$navbar-fg: #e6e6ea;
+$footer-bg: #1e1e24;
+$footer-fg: #9198a1;
+
+/*-- scss:rules --*/
+// Same hues, lifted for contrast against the dark ground rather than re-picked.
+:root {
+  --ccar-d1: #b39dfa;
+  --ccar-d2: #4ac26b;
+  --ccar-d3: #6cb6ff;
+  --ccar-d4: #ff8a5c;
+  --ccar-d5: #e3b341;
+  --ccar-neutral: #9198a1;
+  --ccar-pos: #3987e5;      // same two hues, stepped for the dark surface #17171c
+  --ccar-neg: #e66767;      // CVD ΔE 19.2 / normal 29.0
+  --ccar-grid: #2c2c2a;
+  --ccar-surface: #1e1e24;
+  --ccar-ink: #ffffff;
+  --ccar-tooltip-bg: #f0efec;
+  --ccar-tooltip-ink: #0b0b0b;
+}
+
+@import "_shared";

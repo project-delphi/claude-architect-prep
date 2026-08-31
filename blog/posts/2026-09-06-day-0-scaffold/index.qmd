@@ -1,0 +1,33 @@
+---
+title: "Day 0 — Scaffold"
+description: "Repo structure, 26 issues, and the site. Planned 4 h."
+date: 2026-09-06
+categories: [Sprint]
+draft: true
+---
+
+<!--
+TEMPLATE — copy this directory for each sprint day, then:
+  1. rename to blog/posts/YYYY-MM-DD-day-N-slug/
+  2. set title, description, date, categories ([Domain 1] … [Domain 5], Sprint, Retro)
+  3. delete `draft: true` to publish
+Categories must match one of the values used elsewhere, or the domain colour
+in styles/_shared.scss will not pick it up.
+-->
+
+## What I built
+
+Issue: [#N](https://github.com/project-delphi/claude-architect-prep/issues/1) ·
+lands in `0N-.../` · commit: `<sha>`
+
+## What surprised me
+
+## What I would get wrong on the exam
+
+## Time
+
+| | |
+|---|---|
+| Planned | 4 h |
+| Actual | — |
+| Secondary issue | carried / slipped |
