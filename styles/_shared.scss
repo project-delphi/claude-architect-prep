@@ -11,10 +11,14 @@ thead th {
   border-bottom-width: 2px !important;
 }
 
-// Wide blueprint tables scroll inside their own container rather than pushing
-// the page sideways.
-.cell-output-display > table,
-.table-responsive {
+// Wide blueprint tables scroll inside themselves rather than pushing the page
+// sideways. Quarto emits a bare <table class="caption-top table"> with no
+// wrapper, and overflow-x is ignored on a table box — so the table has to
+// become the scroll container itself.
+main table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
 }
 
@@ -37,12 +41,6 @@ thead th {
   }
 }
 
-// The sprint calendar and coverage matrix use ✅/⬜ as status markers; keep them
-// from being squeezed by the surrounding table padding.
-td:first-child,
-th:first-child {
-  white-space: nowrap;
-}
 
 // Callouts carry the two load-bearing warnings from the README. Give them room.
 .callout {
@@ -151,12 +149,14 @@ figure figcaption {
 .ccar-delta__row:hover .ccar-delta__tip,
 .ccar-delta__row:focus-within .ccar-delta__tip { display: block; }
 
+// The axis must span exactly the track column, or its "0" drifts off the zero
+// rule. Left = label column + gap; right = gap + value column.
 .ccar-delta__axis {
   display: flex;
   justify-content: space-between;
   color: var(--ccar-neutral);
   font-size: 0.76rem;
-  margin: 0.5rem 0 0 9.25rem;
+  margin: 0.5rem 4.95rem 0 9.25rem;
   border-top: 1px solid var(--ccar-grid);
   padding-top: 0.3rem;
 }
@@ -170,5 +170,5 @@ figure figcaption {
 @media (max-width: 575px) {
   .ccar-delta__row { grid-template-columns: 5rem 1fr 3.6rem; }
   .ccar-delta__tip { left: 0; white-space: normal; }
-  .ccar-delta__axis { margin-left: 6.25rem; }
+  .ccar-delta__axis { margin-left: 5.75rem; margin-right: 4.35rem; }
 }

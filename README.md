@@ -86,9 +86,12 @@ a corner case.
 
 ### Planned effort vs. blueprint weighting
 
-The 10 issues allocate 40 h; the remaining 16 h (setup + 3 open days) is the
-slack that closes the gap. This table exists so the shortfall is a **visible
-choice**, not an accident.
+Targets are the 56 h split by blueprint weight. Allocated is study time actually
+booked against a domain — 48 h, because the other 8 h go to day 0's setup and
+day 13's mock exam, neither of which belongs to a domain. Four of the five
+domains are therefore under target by construction, and the deltas sum to
+exactly −8 h. This table exists so the shortfall is a **visible choice**, not an
+accident.
 
 | Domain | Weight | Target (56 h) | Allocated | Delta |
 |---|---|---|---|---|
@@ -100,9 +103,11 @@ choice**, not an accident.
 | — | — | — | *+4 h mock exam (#10)* | |
 
 With the gap issues filed, all 14 days are allocated and the largest remaining
-shortfall is **Domain 4 at −3.2 h** — the one to watch, since its three
-unticketed statements are prompting fundamentals the sample questions lean on.
-Fold them into #8's day where you can.
+shortfall is **Domain 4 at −3.2 h** — the one to watch. Three of its six task
+statements (4.1, 4.2, 4.4) are tracked only by `secondary` issues #19, #20 and
+#21 — the tier that shares a day and slips first — and they are prompting
+fundamentals the sample questions lean on. Fold them into #8's day where you
+can.
 
 ---
 

@@ -7,7 +7,9 @@
     const tag = () => {
       const sel = ".listing-category, .quarto-category, .quarto-listing-category .category";
       for (const el of document.querySelectorAll(sel)) {
-        const m = /^\s*Domain\s+([1-5])\s*$/.exec(el.textContent || "");
+        // The listing sidebar appends a count span, so the text is "Domain 3 (2)";
+        // per-post badges are just "Domain 3". Accept both.
+        const m = /^\s*Domain\s+([1-5])\s*(?:\(\d+\))?\s*$/.exec(el.textContent || "");
         if (m) el.setAttribute("data-ccar-domain", m[1]);
       }
     };

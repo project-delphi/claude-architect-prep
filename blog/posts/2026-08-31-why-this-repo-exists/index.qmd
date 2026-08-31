@@ -59,9 +59,11 @@ ones are a reading list with deadlines attached.
 
 The allocation does not match the weighting, and the [sprint
 plan](../../../sprint.qmd) shows the deltas rather than hiding them. The largest
-shortfall is **Domain 4 at −3.2 h**, which is uncomfortable: its three unticketed
-task statements are prompting fundamentals that the sample questions lean on
-heavily. The three open days are the slack meant to absorb that.
+shortfall is **Domain 4 at −3.2 h**, which is uncomfortable. All 30 statements
+are tracked, but three of Domain 4's six (4.1, 4.2, 4.4) are tracked only by
+`secondary` issues — the tier that shares a day and slips first. They are also
+prompting fundamentals the sample questions lean on heavily. The least protected
+work in the sprint is sitting on top of some of the most examinable material.
 
 ## What each of the next fourteen posts will contain
 

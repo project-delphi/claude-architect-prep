@@ -1,0 +1,30 @@
+---
+# TEMPLATE — not rendered. Quarto skips `_`-prefixed directories, so this file
+# never reaches the site. To start a day's post:
+#   cp blog/_template/day-post.qmd blog/posts/2026-09-07-day-1-agentic-loops/index.qmd
+# then fill in the frontmatter below and delete these comments.
+#
+# `categories` must be one of: Domain 1 … Domain 5, Sprint, Retro — anything
+# else will not pick up a colour in styles/_shared.scss.
+title: "Day N — <issue title>"
+description: "Closes #N · `0N-.../` · planned 4 h"
+date: 2026-09-07
+categories: [Domain 1]
+---
+
+## What I built
+
+Issue: [#N](https://github.com/project-delphi/claude-architect-prep/issues/N) ·
+lands in `0N-.../` · commit: `<sha>`
+
+## What surprised me
+
+## What I would get wrong on the exam
+
+## Time
+
+| | |
+|---|---|
+| Planned | 4 h |
+| Actual | — |
+| Secondary issue | carried / slipped |

@@ -27,9 +27,12 @@ directory the work must land in. Issue numbers below link to the live tracker.
 
 ## Planned effort vs. blueprint weighting
 
-The 10 core issues allocate 40 h; the remaining 16 h — setup plus three open
-days — is the slack that closes the gap. This section exists so the shortfall is
-a **visible choice**, not an accident.
+Targets below are the 56 h split by blueprint weight. Allocation is the study
+time actually booked against each domain — 48 h, because the other 8 h go to
+day 0's setup and day 13's mock exam, neither of which belongs to a domain.
+**So four of the five domains sit under target by construction**, and the
+deltas sum to exactly −8 h. This section exists so that shortfall is a
+**visible choice**, not an accident.
 
 | Domain | Weight | Target (56 h) | Allocated | Delta |
 |---|---|---|---|---|
@@ -53,9 +56,13 @@ a **visible choice**, not an accident.
 ```
 
 With the gap issues filed, all 14 days are allocated and the largest remaining
-shortfall is **Domain 4 at −3.2 h** — the one to watch, since its three
-unticketed statements are prompting fundamentals the sample questions lean on.
-Fold them into [#8](https://github.com/project-delphi/claude-architect-prep/issues/8)'s day where you can.
+shortfall is **Domain 4 at −3.2 h** — the one to watch. Three of its six task
+statements (4.1, 4.2, 4.4) are tracked only by `secondary` issues
+[#19](https://github.com/project-delphi/claude-architect-prep/issues/19), [#20](https://github.com/project-delphi/claude-architect-prep/issues/20) and [#21](https://github.com/project-delphi/claude-architect-prep/issues/21), which *share*
+a day rather than owning one — and they are prompting fundamentals the sample
+questions lean on. They are therefore both the least protected work in the
+sprint and among the most examinable. Fold them into
+[#8](https://github.com/project-delphi/claude-architect-prep/issues/8)'s day where you can.
 
 Note that Domain 3 is the only domain running a *surplus*, and it is small. Every
 other domain is under its weighted target; the sprint is buying that back out of
