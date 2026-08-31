@@ -1,0 +1,9 @@
+---
+pagetitle: "Domain 4 — Prompt Engineering & Structured Output"
+---
+
+{{< include /04-prompt-engineering/README.md >}}
+
+------------------------------------------------------------------------
+
+[Browse `04-prompt-engineering/` on GitHub](https://github.com/project-delphi/claude-architect-prep/tree/main/04-prompt-engineering)

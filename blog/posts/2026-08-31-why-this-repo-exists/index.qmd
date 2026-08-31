@@ -1,0 +1,78 @@
+---
+title: "Why this repo is shaped like the exam blueprint"
+description: "Directories numbered to match the domains, deadlines that are real, and a sprint that is over-committed on purpose."
+date: 2026-08-31
+categories: [Sprint]
+---
+
+The sprint starts on **2026-09-06**. This post is the pre-commitment: what the
+plan is, and what it is deliberately getting wrong.
+
+## The score report dictates the directory names
+
+The CCAR-F result is not a single number. It reports pass/fail with a scaled
+score **plus percent-correct by domain**. That detail is the whole design of this
+repository: the five directories are numbered `01-` to `05-` to match the five
+official domains exactly, so a weak domain N on the report points straight at
+directory `0N-` with nothing to interpret in between.
+
+| Directory | Domain | Weight |
+|---|---|---|
+| `01-agentic-loops/` | Agentic Architecture & Orchestration | **27%** |
+| `02-mcp-servers/` | Tool Design & MCP Integration | 18% |
+| `03-claude-code/` | Claude Code Configuration & Workflows | 20% |
+| `04-prompt-engineering/` | Prompt Engineering & Structured Output | 20% |
+| `05-context-reliability/` | Context Management & Reliability | 15% |
+
+Domain 1 is 27% and carries 7 task statements — more of both than anything else.
+Domain 5 carries the *lowest* weight at 15% and is nonetheless a primary domain
+in **4 of the 6 exam scenarios**. It is connective tissue, not a corner case, and
+the weighting understates it. Those two facts set the whole budget.
+
+## Deadlines that GitHub will enforce
+
+Twenty-six issues, each with a milestone carrying a real due date. Not a
+checklist — a tracker that goes red.
+
+The rule that makes it work is step 3 of the loop: **close the issue with a link
+to the commit**. An issue closed with no artifact is a lie to your future self,
+and a fortnight is more than long enough to start telling it.
+
+## The sprint is over-committed, on purpose
+
+56 hours are available. If every one of the 26 issues were a build, the work is
+roughly 90 hours. That gap is not an oversight — it is the reason the issues sit
+in three tiers:
+
+- **10 core** issues — each owns its day and produces a committed artifact.
+- **4 coverage-gap** issues — filed after auditing the blueprint and finding
+  holes in Domains 1, 3 and 5. Each also owns a day.
+- **12 secondary** issues — labelled `secondary`, each *sharing* a day with the
+  topically closest primary issue. Reading and reasoning, not a separate build.
+
+**If a day runs long, the secondary issue is what slips.** Naming the thing that
+gives way in advance is the only way to stop the whole plan giving way instead.
+Completion gets tracked against the 14 core-plus-gap issues; the 12 secondary
+ones are a reading list with deadlines attached.
+
+## Where it is already short
+
+The allocation does not match the weighting, and the [sprint
+plan](../../../sprint.qmd) shows the deltas rather than hiding them. The largest
+shortfall is **Domain 4 at −3.2 h**, which is uncomfortable. All 30 statements
+are tracked, but three of Domain 4's six (4.1, 4.2, 4.4) are tracked only by
+`secondary` issues — the tier that shares a day and slips first. They are also
+prompting fundamentals the sample questions lean on heavily. The least protected
+work in the sprint is sitting on top of some of the most examinable material.
+
+## What each of the next fourteen posts will contain
+
+The same four headings, every day:
+
+- **What I built** — with the issue number and the commit.
+- **What surprised me** — the thing the docs did not say.
+- **What I would get wrong on the exam** — stated before the mock, not after.
+- **Time** — planned versus actual.
+
+That last line is the one worth reading. A study plan's real finding is the
+distance between what it budgeted and what it cost.

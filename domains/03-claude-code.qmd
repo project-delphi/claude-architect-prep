@@ -1,0 +1,9 @@
+---
+pagetitle: "Domain 3 — Claude Code Configuration & Workflows"
+---
+
+{{< include /03-claude-code/README.md >}}
+
+------------------------------------------------------------------------
+
+[Browse `03-claude-code/` on GitHub](https://github.com/project-delphi/claude-architect-prep/tree/main/03-claude-code)

@@ -4,8 +4,9 @@ A 2-week, 4-hour/day study sprint. The repository is structured by the official
 exam blueprint, tracked with GitHub issues carrying real deadlines, and anchored
 by working code rather than notes alone.
 
-**Sprint window:** 2026-08-30 → 2026-09-12 (14 days · 4 h/day · **56 h**)
+**Sprint window:** 2026-09-06 → 2026-09-19 (14 days · 4 h/day · **56 h**)
 **Candidate:** [@project-delphi](https://github.com/project-delphi)
+**Site & sprint log:** <https://project-delphi.github.io/claude-architect-prep/>
 
 ---
 
@@ -68,26 +69,29 @@ a corner case.
 
 | Day | Date | Issue | Domain | Deliverable lands in |
 |---|---|---|---|---|
-| 0 | Sun 2026-08-30 | — | setup | repo scaffold (this commit) |
-| 1 | Mon 2026-08-31 | [#1] Orchestrator-worker loop with explicit `stop_reason` checks | 1 | `01-agentic-loops/` |
-| 2 | Tue 2026-09-01 | [#2] Multi-agent subagent delegation pattern<br>*+ [#15] decomposition · [#16] error propagation* | 1, 5 | `01-agentic-loops/` |
-| 3 | Wed 2026-09-02 | [#3] Project-level CLAUDE.md and path-scoped rules<br>*+ [#17] slash commands & skills* | 3 | `03-claude-code/` |
-| 4 | Thu 2026-09-03 | [#4] Headless execution and CI/CD workflow automation | 3 | `03-claude-code/` |
-| 5 | Fri 2026-09-04 | [#5] Custom local MCP server with strict JSON schema validation | 2 | `02-mcp-servers/` |
-| 6 | Sat 2026-09-05 | [#6] Tool selection anti-patterns<br>*+ [#18] built-in tools* | 2 | `02-mcp-servers/` |
-| 7 | Sun 2026-09-06 | [#7] Review and audit repository code structure<br>*+ [#19] explicit criteria & false positives* | review, 4 | repo-wide |
-| 8 | Mon 2026-09-07 | [#11] Agent SDK hooks · [#12] Session state, forking, stale context<br>*+ [#26] enforcement & handoff* | 1 | `01-agentic-loops/` |
-| 9 | Tue 2026-09-08 | [#8] Structured outputs and Message Batches API<br>*+ [#20] few-shot · [#21] validation retry* | 4 | `04-prompt-engineering/` |
-| 10 | Wed 2026-09-09 | [#13] Plan mode vs direct execution<br>*+ [#22] iterative refinement* | 3 | `03-claude-code/` |
-| 11 | Thu 2026-09-10 | [#9] Prompt caching headers and conversation compaction<br>*+ [#23] large-codebase context* | 5 | `05-context-reliability/` |
-| 12 | Fri 2026-09-11 | [#14] Provenance & conflicting sources<br>*+ [#24] escalation · [#25] confidence calibration* | 5 | `05-context-reliability/` |
-| 13 | Sat 2026-09-12 | [#10] Full-length 120-minute mock exam & remediation | all | `05-context-reliability/` |
+| 0 | Sun 2026-09-06 | — | setup | repo scaffold (this commit) |
+| 1 | Mon 2026-09-07 | [#1] Orchestrator-worker loop with explicit `stop_reason` checks | 1 | `01-agentic-loops/` |
+| 2 | Tue 2026-09-08 | [#2] Multi-agent subagent delegation pattern<br>*+ [#15] decomposition · [#16] error propagation* | 1, 5 | `01-agentic-loops/` |
+| 3 | Wed 2026-09-09 | [#3] Project-level CLAUDE.md and path-scoped rules<br>*+ [#17] slash commands & skills* | 3 | `03-claude-code/` |
+| 4 | Thu 2026-09-10 | [#4] Headless execution and CI/CD workflow automation | 3 | `03-claude-code/` |
+| 5 | Fri 2026-09-11 | [#5] Custom local MCP server with strict JSON schema validation | 2 | `02-mcp-servers/` |
+| 6 | Sat 2026-09-12 | [#6] Tool selection anti-patterns<br>*+ [#18] built-in tools* | 2 | `02-mcp-servers/` |
+| 7 | Sun 2026-09-13 | [#7] Review and audit repository code structure<br>*+ [#19] explicit criteria & false positives* | review, 4 | repo-wide |
+| 8 | Mon 2026-09-14 | [#11] Agent SDK hooks · [#12] Session state, forking, stale context<br>*+ [#26] enforcement & handoff* | 1 | `01-agentic-loops/` |
+| 9 | Tue 2026-09-15 | [#8] Structured outputs and Message Batches API<br>*+ [#20] few-shot · [#21] validation retry* | 4 | `04-prompt-engineering/` |
+| 10 | Wed 2026-09-16 | [#13] Plan mode vs direct execution<br>*+ [#22] iterative refinement* | 3 | `03-claude-code/` |
+| 11 | Thu 2026-09-17 | [#9] Prompt caching headers and conversation compaction<br>*+ [#23] large-codebase context* | 5 | `05-context-reliability/` |
+| 12 | Fri 2026-09-18 | [#14] Provenance & conflicting sources<br>*+ [#24] escalation · [#25] confidence calibration* | 5 | `05-context-reliability/` |
+| 13 | Sat 2026-09-19 | [#10] Full-length 120-minute mock exam & remediation | all | `05-context-reliability/` |
 
 ### Planned effort vs. blueprint weighting
 
-The 10 issues allocate 40 h; the remaining 16 h (setup + 3 open days) is the
-slack that closes the gap. This table exists so the shortfall is a **visible
-choice**, not an accident.
+Targets are the 56 h split by blueprint weight. Allocated is study time actually
+booked against a domain — 48 h, because the other 8 h go to day 0's setup and
+day 13's mock exam, neither of which belongs to a domain. Four of the five
+domains are therefore under target by construction, and the deltas sum to
+exactly −8 h. This table exists so the shortfall is a **visible choice**, not an
+accident.
 
 | Domain | Weight | Target (56 h) | Allocated | Delta |
 |---|---|---|---|---|
@@ -99,9 +103,11 @@ choice**, not an accident.
 | — | — | — | *+4 h mock exam (#10)* | |
 
 With the gap issues filed, all 14 days are allocated and the largest remaining
-shortfall is **Domain 4 at −3.2 h** — the one to watch, since its three
-unticketed statements are prompting fundamentals the sample questions lean on.
-Fold them into #8's day where you can.
+shortfall is **Domain 4 at −3.2 h** — the one to watch. Three of its six task
+statements (4.1, 4.2, 4.4) are tracked only by `secondary` issues #19, #20 and
+#21 — the tier that shares a day and slips first — and they are prompting
+fundamentals the sample questions lean on. Fold them into #8's day where you
+can.
 
 ---
 
@@ -195,6 +201,21 @@ To run the orchestrator against the live API:
 export ANTHROPIC_API_KEY=sk-ant-...   # or: ant auth login
 uv run 01-agentic-loops/orchestrator.py --task "Audit the refund flow" -v
 ```
+
+To work on the site — a Quarto project at the repo root, published to GitHub
+Pages by `.github/workflows/publish.yml` on every push to `main`:
+
+```bash
+uv sync --group docs          # adds a Jupyter kernel for the one executable cell
+uv run quarto preview        # live-reloading local preview
+uv run quarto render         # build into _site/
+```
+
+The five domain pages `{{< include >}}` the domain `README.md` files verbatim,
+so the task-statement tables have exactly one source.
+
+`uv run` is not optional: Quarto resolves `python3` from `PATH`, not from
+`.venv`, and the render fails without it.
 
 To (re)create the tracker on GitHub — idempotent, safe to re-run:
 

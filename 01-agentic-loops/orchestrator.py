@@ -84,6 +84,7 @@ class OrchestratorError(RuntimeError):
 # --------------------------------------------------------------------------
 # 1. stop_reason dispatch - a pure function, so it is testable with no client
 # --------------------------------------------------------------------------
+# docs:start dispatch_stop_reason
 def dispatch_stop_reason(response: Any) -> Action:
     """Map a response's `stop_reason` to the loop's next action.
 
@@ -120,6 +121,7 @@ def dispatch_stop_reason(response: Any) -> Action:
         f"Unrecognised stop_reason {reason!r}. Refusing to guess whether the "
         f"turn completed - handle this reason explicitly before continuing."
     )
+# docs:end dispatch_stop_reason
 
 
 # --------------------------------------------------------------------------

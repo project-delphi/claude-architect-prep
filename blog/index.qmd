@@ -1,0 +1,22 @@
+---
+title: "Sprint log"
+subtitle: "Fourteen days, one post a day."
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  fields: [date, title, categories, description, reading-time]
+  feed:
+    title: "CCAR-F Study Sprint — log"
+    description: "Daily log of a 2-week sprint for the Claude Certified Architect – Foundations exam."
+page-layout: full
+title-block-banner: false
+toc: false
+---
+
+Each post names the issue it closes, the artifact it produced, and what the day
+actually cost. **Including the days that slipped** — a log that only records the
+days that went well measures nothing.

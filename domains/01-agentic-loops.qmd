@@ -1,0 +1,39 @@
+---
+pagetitle: "Domain 1 — Agentic Architecture & Orchestration"
+---
+
+{{< include /01-agentic-loops/README.md >}}
+
+------------------------------------------------------------------------
+
+## The termination logic, in full
+
+`dispatch_stop_reason()` is the heart of TS 1.1 and the one piece of this repo
+worth reading closely. It is **pure** — it reads `stop_reason` and nothing else,
+takes no client, performs no I/O, and never inspects response *text*. That is
+what makes the loop's termination auditable and unit-testable.
+
+The listing below is sliced live out of
+[`01-agentic-loops/orchestrator.py`](https://github.com/project-delphi/claude-architect-prep/blob/main/01-agentic-loops/orchestrator.py)
+at render time, so it cannot drift from the code that actually runs.
+
+```{python}
+#| echo: false
+#| output: asis
+from pathlib import Path
+
+src = Path("../01-agentic-loops/orchestrator.py").read_text().splitlines()
+start = src.index("# docs:start dispatch_stop_reason") + 1
+end = src.index("# docs:end dispatch_stop_reason")
+print("```python")
+print("\n".join(src[start:end]))
+print("```")
+```
+
+**An unrecognised `stop_reason` raises rather than returns.** Failing loudly
+beats silently treating an unknown state as completion — the exact anti-pattern
+TS 1.1 asks about.
+
+------------------------------------------------------------------------
+
+[Browse `01-agentic-loops/` on GitHub](https://github.com/project-delphi/claude-architect-prep/tree/main/01-agentic-loops)

@@ -1,0 +1,108 @@
+---
+title: "Sprint plan"
+subtitle: "14 days · 4 h/day · 56 hours · 26 issues."
+---
+
+Every day of the sprint has an issue, a milestone with a real due date, and a
+directory the work must land in. Issue numbers below link to the live tracker.
+
+## The 14-day calendar
+
+| Day | Date | Issue | Domain | Deliverable lands in |
+|---|---|---|---|---|
+| 0 | Sun 2026-09-06 | — | setup | repo scaffold (this commit) |
+| 1 | Mon 2026-09-07 | [[#1](https://github.com/project-delphi/claude-architect-prep/issues/1)] Orchestrator-worker loop with explicit `stop_reason` checks | 1 | [`01-agentic-loops/`](domains/01-agentic-loops.qmd) |
+| 2 | Tue 2026-09-08 | [[#2](https://github.com/project-delphi/claude-architect-prep/issues/2)] Multi-agent subagent delegation pattern<br>*+ [[#15](https://github.com/project-delphi/claude-architect-prep/issues/15)] decomposition · [[#16](https://github.com/project-delphi/claude-architect-prep/issues/16)] error propagation* | 1, 5 | [`01-agentic-loops/`](domains/01-agentic-loops.qmd) |
+| 3 | Wed 2026-09-09 | [[#3](https://github.com/project-delphi/claude-architect-prep/issues/3)] Project-level CLAUDE.md and path-scoped rules<br>*+ [[#17](https://github.com/project-delphi/claude-architect-prep/issues/17)] slash commands & skills* | 3 | [`03-claude-code/`](domains/03-claude-code.qmd) |
+| 4 | Thu 2026-09-10 | [[#4](https://github.com/project-delphi/claude-architect-prep/issues/4)] Headless execution and CI/CD workflow automation | 3 | [`03-claude-code/`](domains/03-claude-code.qmd) |
+| 5 | Fri 2026-09-11 | [[#5](https://github.com/project-delphi/claude-architect-prep/issues/5)] Custom local MCP server with strict JSON schema validation | 2 | [`02-mcp-servers/`](domains/02-mcp-servers.qmd) |
+| 6 | Sat 2026-09-12 | [[#6](https://github.com/project-delphi/claude-architect-prep/issues/6)] Tool selection anti-patterns<br>*+ [[#18](https://github.com/project-delphi/claude-architect-prep/issues/18)] built-in tools* | 2 | [`02-mcp-servers/`](domains/02-mcp-servers.qmd) |
+| 7 | Sun 2026-09-13 | [[#7](https://github.com/project-delphi/claude-architect-prep/issues/7)] Review and audit repository code structure<br>*+ [[#19](https://github.com/project-delphi/claude-architect-prep/issues/19)] explicit criteria & false positives* | review, 4 | repo-wide |
+| 8 | Mon 2026-09-14 | [[#11](https://github.com/project-delphi/claude-architect-prep/issues/11)] Agent SDK hooks · [[#12](https://github.com/project-delphi/claude-architect-prep/issues/12)] Session state, forking, stale context<br>*+ [[#26](https://github.com/project-delphi/claude-architect-prep/issues/26)] enforcement & handoff* | 1 | [`01-agentic-loops/`](domains/01-agentic-loops.qmd) |
+| 9 | Tue 2026-09-15 | [[#8](https://github.com/project-delphi/claude-architect-prep/issues/8)] Structured outputs and Message Batches API<br>*+ [[#20](https://github.com/project-delphi/claude-architect-prep/issues/20)] few-shot · [[#21](https://github.com/project-delphi/claude-architect-prep/issues/21)] validation retry* | 4 | [`04-prompt-engineering/`](domains/04-prompt-engineering.qmd) |
+| 10 | Wed 2026-09-16 | [[#13](https://github.com/project-delphi/claude-architect-prep/issues/13)] Plan mode vs direct execution<br>*+ [[#22](https://github.com/project-delphi/claude-architect-prep/issues/22)] iterative refinement* | 3 | [`03-claude-code/`](domains/03-claude-code.qmd) |
+| 11 | Thu 2026-09-17 | [[#9](https://github.com/project-delphi/claude-architect-prep/issues/9)] Prompt caching headers and conversation compaction<br>*+ [[#23](https://github.com/project-delphi/claude-architect-prep/issues/23)] large-codebase context* | 5 | [`05-context-reliability/`](domains/05-context-reliability.qmd) |
+| 12 | Fri 2026-09-18 | [[#14](https://github.com/project-delphi/claude-architect-prep/issues/14)] Provenance & conflicting sources<br>*+ [[#24](https://github.com/project-delphi/claude-architect-prep/issues/24)] escalation · [[#25](https://github.com/project-delphi/claude-architect-prep/issues/25)] confidence calibration* | 5 | [`05-context-reliability/`](domains/05-context-reliability.qmd) |
+| 13 | Sat 2026-09-19 | [[#10](https://github.com/project-delphi/claude-architect-prep/issues/10)] Full-length 120-minute mock exam & remediation | all | [`05-context-reliability/`](domains/05-context-reliability.qmd) |
+
+## Planned effort vs. blueprint weighting
+
+Targets below are the 56 h split by blueprint weight. Allocation is the study
+time actually booked against each domain — 48 h, because the other 8 h go to
+day 0's setup and day 13's mock exam, neither of which belongs to a domain.
+**So four of the five domains sit under target by construction**, and the
+deltas sum to exactly −8 h. This section exists so that shortfall is a
+**visible choice**, not an accident.
+
+| Domain | Weight | Target (56 h) | Allocated | Delta |
+|---|---|---|---|---|
+| [1 — Agentic](domains/01-agentic-loops.qmd) | 27% | 15.1 h | 12 h — [#1](https://github.com/project-delphi/claude-architect-prep/issues/1) · [#2](https://github.com/project-delphi/claude-architect-prep/issues/2) · [#11](https://github.com/project-delphi/claude-architect-prep/issues/11) · [#12](https://github.com/project-delphi/claude-architect-prep/issues/12) | **−3.1 h** |
+| [2 — Tool/MCP](domains/02-mcp-servers.qmd) | 18% | 10.1 h | 8 h — [#5](https://github.com/project-delphi/claude-architect-prep/issues/5) · [#6](https://github.com/project-delphi/claude-architect-prep/issues/6) | **−2.1 h** |
+| [3 — Claude Code](domains/03-claude-code.qmd) | 20% | 11.2 h | 12 h — [#3](https://github.com/project-delphi/claude-architect-prep/issues/3) · [#4](https://github.com/project-delphi/claude-architect-prep/issues/4) · [#13](https://github.com/project-delphi/claude-architect-prep/issues/13) | **+0.8 h** |
+| [4 — Prompt Eng](domains/04-prompt-engineering.qmd) | 20% | 11.2 h | 8 h — [#8](https://github.com/project-delphi/claude-architect-prep/issues/8) · [#7](https://github.com/project-delphi/claude-architect-prep/issues/7) | **−3.2 h** |
+| [5 — Context](domains/05-context-reliability.qmd) | 15% | 8.4 h | 8 h — [#9](https://github.com/project-delphi/claude-architect-prep/issues/9) · [#14](https://github.com/project-delphi/claude-architect-prep/issues/14) | **−0.4 h** |
+| — | — | — | *+4 h mock exam ([#10](https://github.com/project-delphi/claude-architect-prep/issues/10))* | |
+
+```{=html}
+<figure class="ccar-delta" role="group" aria-label="Allocated study hours minus blueprint-weighted target, by domain">
+<div class="ccar-delta__row" tabindex="0" style="--w:44.29%"><div class="ccar-delta__label">1 — Agentic</div><div class="ccar-delta__track"><div class="ccar-delta__bar ccar-delta__bar--neg"></div></div><div class="ccar-delta__value">−3.1 h</div><div class="ccar-delta__tip">1 — Agentic · 27% of the exam<br>target 15.1 h · allocated 12 h · <strong>−3.1 h</strong></div></div>
+<div class="ccar-delta__row" tabindex="0" style="--w:30.00%"><div class="ccar-delta__label">2 — Tool/MCP</div><div class="ccar-delta__track"><div class="ccar-delta__bar ccar-delta__bar--neg"></div></div><div class="ccar-delta__value">−2.1 h</div><div class="ccar-delta__tip">2 — Tool/MCP · 18% of the exam<br>target 10.1 h · allocated 8 h · <strong>−2.1 h</strong></div></div>
+<div class="ccar-delta__row" tabindex="0" style="--w:11.43%"><div class="ccar-delta__label">3 — Claude Code</div><div class="ccar-delta__track"><div class="ccar-delta__bar ccar-delta__bar--pos"></div></div><div class="ccar-delta__value">+0.8 h</div><div class="ccar-delta__tip">3 — Claude Code · 20% of the exam<br>target 11.2 h · allocated 12 h · <strong>+0.8 h</strong></div></div>
+<div class="ccar-delta__row" tabindex="0" style="--w:45.71%"><div class="ccar-delta__label">4 — Prompt Eng</div><div class="ccar-delta__track"><div class="ccar-delta__bar ccar-delta__bar--neg"></div></div><div class="ccar-delta__value">−3.2 h</div><div class="ccar-delta__tip">4 — Prompt Eng · 20% of the exam<br>target 11.2 h · allocated 8 h · <strong>−3.2 h</strong></div></div>
+<div class="ccar-delta__row" tabindex="0" style="--w:5.71%"><div class="ccar-delta__label">5 — Context</div><div class="ccar-delta__track"><div class="ccar-delta__bar ccar-delta__bar--neg"></div></div><div class="ccar-delta__value">−0.4 h</div><div class="ccar-delta__tip">5 — Context · 15% of the exam<br>target 8.4 h · allocated 8 h · <strong>−0.4 h</strong></div></div>
+<div class="ccar-delta__axis"><span>−3.5 h</span><span>0</span><span>+3.5 h</span></div>
+<figcaption class="ccar-delta__caption">Allocated hours minus weighted target. Left of zero is a shortfall; the figures are in the table above.</figcaption>
+</figure>
+```
+
+With the gap issues filed, all 14 days are allocated and the largest remaining
+shortfall is **Domain 4 at −3.2 h** — the one to watch. Three of its six task
+statements (4.1, 4.2, 4.4) are tracked only by `secondary` issues
+[#19](https://github.com/project-delphi/claude-architect-prep/issues/19), [#20](https://github.com/project-delphi/claude-architect-prep/issues/20) and [#21](https://github.com/project-delphi/claude-architect-prep/issues/21), which *share*
+a day rather than owning one — and they are prompting fundamentals the sample
+questions lean on. They are therefore both the least protected work in the
+sprint and among the most examinable. Fold them into
+[#8](https://github.com/project-delphi/claude-architect-prep/issues/8)'s day where you can.
+
+Note that Domain 3 is the only domain running a *surplus*, and it is small. Every
+other domain is under its weighted target; the sprint is buying that back out of
+slack days, not out of a plan.
+
+## How the accountability loop works
+
+1. Each issue has a **milestone with a real due date**, so GitHub flags slippage.
+2. Work lands as a commit in the matching domain directory.
+3. Close the issue **with a link to that commit** — an issue closed with no
+   artifact is a lie to your future self.
+4. Day 13's mock exam produces a per-domain percent-correct. Map each weak domain
+   to its `0N-` directory and remediate there.
+
+The [sprint log](blog/index.qmd) is step 3 made public: one post per day, naming
+the issue closed, the artifact produced, and planned versus actual hours.
+
+::: {.callout-warning}
+## If a day runs long, the secondary issue is what slips
+
+26 issues across 14 days at 4 h/day is 56 h against roughly 90 h of work if every
+issue were a build. The 12 `secondary` issues are scoped as comprehension
+checkpoints, each paired with the day whose primary issue is topically closest.
+Track completion against the **14 core-plus-gap issues**; treat the 12 secondary
+ones as a reading list with deadlines attached.
+:::
+
+## Running the code
+
+```bash
+uv sync                                              # create .venv from uv.lock
+uv run 01-agentic-loops/orchestrator.py --self-check # offline checks, no credentials
+uv run 01-agentic-loops/orchestrator.py --check-client
+```
+
+To (re)create the tracker on GitHub — idempotent, safe to re-run:
+
+```bash
+./scripts/bootstrap_issues.sh                    # the 10 core sprint issues
+./scripts/bootstrap_issues.sh --with-gap-issues  # + the 4 coverage-gap issues
+./scripts/bootstrap_issues.sh --with-secondary   # + the 12 secondary issues
+./scripts/bootstrap_issues.sh --all              # all 26
+```
