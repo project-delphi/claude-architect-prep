@@ -1,0 +1,65 @@
+name: Publish site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.qmd"
+      - "exam.qmd"
+      - "sprint.qmd"
+      - "domains/**"
+      - "blog/**"
+      - "styles/**"
+      - "includes/**"
+      - "_quarto.yml"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "0?-*/README.md"
+      - "01-agentic-loops/orchestrator.py"
+      - ".github/workflows/publish.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; queue rather than cancel, so a superseded build
+# still finishes rather than leaving Pages half-updated.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.6.40"
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      # The one executable cell on the site slices dispatch_stop_reason() out of
+      # orchestrator.py at render time, so the render needs a Jupyter kernel.
+      - run: uv sync --group docs
+
+      - run: uv run quarto render
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

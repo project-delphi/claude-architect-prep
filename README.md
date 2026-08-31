@@ -197,7 +197,8 @@ export ANTHROPIC_API_KEY=sk-ant-...   # or: ant auth login
 uv run 01-agentic-loops/orchestrator.py --task "Audit the refund flow" -v
 ```
 
-To work on the site — a Quarto project at the repo root:
+To work on the site — a Quarto project at the repo root, published to GitHub
+Pages by `.github/workflows/publish.yml` on every push to `main`:
 
 ```bash
 uv sync --group docs   # adds a Jupyter kernel for the one executable cell
@@ -207,16 +208,6 @@ quarto render          # build into _site/
 
 The five domain pages `{{< include >}}` the domain `README.md` files verbatim,
 so the task-statement tables have exactly one source.
-
-**Publishing is manual and local — there is no CI.** The command renders, then
-force-pushes `_site/` to the `gh-pages` branch, which is what GitHub Pages
-serves:
-
-```bash
-quarto publish gh-pages
-```
-
-Run it from a clean `main` after merging, or the site will lag the source.
 
 To (re)create the tracker on GitHub — idempotent, safe to re-run:
 
