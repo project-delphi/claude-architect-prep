@@ -206,13 +206,16 @@ To work on the site — a Quarto project at the repo root, published to GitHub
 Pages by `.github/workflows/publish.yml` on every push to `main`:
 
 ```bash
-uv sync --group docs   # adds a Jupyter kernel for the one executable cell
-quarto preview         # live-reloading local preview
-quarto render          # build into _site/
+uv sync --group docs          # adds a Jupyter kernel for the one executable cell
+uv run quarto preview        # live-reloading local preview
+uv run quarto render         # build into _site/
 ```
 
 The five domain pages `{{< include >}}` the domain `README.md` files verbatim,
 so the task-statement tables have exactly one source.
+
+`uv run` is not optional: Quarto resolves `python3` from `PATH`, not from
+`.venv`, and the render fails without it.
 
 To (re)create the tracker on GitHub — idempotent, safe to re-run:
 

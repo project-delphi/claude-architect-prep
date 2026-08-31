@@ -9,6 +9,9 @@ project:
     - blog/index.qmd
     - blog/posts/**/*.qmd
 
+filters:
+  - scroll-tables.lua
+
 website:
   title: "CCAR-F Study Sprint"
   description: "A 2-week, 4 h/day sprint for the Claude Certified Architect – Foundations exam"

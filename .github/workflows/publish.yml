@@ -14,7 +14,7 @@ on:
       - "_quarto.yml"
       - "pyproject.toml"
       - "uv.lock"
-      - "0?-*/README.md"
+      - "0*/README.md"
       - "01-agentic-loops/orchestrator.py"
       - ".github/workflows/publish.yml"
   workflow_dispatch:
@@ -24,8 +24,9 @@ permissions:
   pages: write
   id-token: write
 
-# Never let two deploys race; queue rather than cancel, so a superseded build
-# still finishes rather than leaving Pages half-updated.
+# Never let two deploys race. This protects the run that is already executing;
+# GitHub still cancels any *pending* run in the group when a newer push
+# arrives, so on a burst only the first and last builds survive.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -35,6 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Configures the Pages deployment rather than relying on the repo already
+      # having its Pages source set to GitHub Actions by hand.
+      - uses: actions/configure-pages@v5
 
       - uses: quarto-dev/quarto-actions/setup@v2
         with:

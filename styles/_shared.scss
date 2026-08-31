@@ -11,15 +11,12 @@ thead th {
   border-bottom-width: 2px !important;
 }
 
-// Wide blueprint tables scroll inside themselves rather than pushing the page
-// sideways. Quarto emits a bare <table class="caption-top table"> with no
-// wrapper, and overflow-x is ignored on a table box — so the table has to
-// become the scroll container itself.
-main table {
-  display: block;
-  width: 100%;
-  max-width: 100%;
+// Wide blueprint tables scroll inside their own container rather than pushing
+// the page sideways. scroll-tables.lua supplies the wrapper at build time; the
+// table keeps its own display, and with it its semantics for screen readers.
+.table-scroll {
   overflow-x: auto;
+  max-width: 100%;
 }
 
 // Blog listing: category badges.
