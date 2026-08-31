@@ -19,7 +19,5 @@ scratch/
 
 # Quarto
 _site/
-.quarto/
-/.luarc.json
-
 /.quarto/
+/.luarc.json
