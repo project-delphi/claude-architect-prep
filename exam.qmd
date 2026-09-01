@@ -129,7 +129,7 @@ The tiers are what make the over-commitment survivable — see
 
 **Official**
 
-- Exam guide — *Claude Certified Architect – Foundations*, v1.0 (July 2026)
+- [Exam guide (PDF)](https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542750%2FClaude+Certified+Architect+%E2%80%93+Foundations+Exam+Guide.pdf) — *Claude Certified Architect – Foundations*, v1.0 (July 2026). Anthropic hosts this on a versioned CDN path that can change when the guide is revised; if the link 404s, grab a fresh copy from the [preparation courses](https://anthropic-partners.skilljar.com/claude-certified-architect-foundations-certification#ccarf-prep) page.
 - [Preparation courses](https://anthropic-partners.skilljar.com/claude-certified-architect-foundations-certification#ccarf-prep) (completed)
 - [Anthropic docs](https://docs.claude.com) · [Claude Code docs](https://code.claude.com/docs)
 
