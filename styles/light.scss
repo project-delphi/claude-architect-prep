@@ -26,6 +26,7 @@ $code-color: #b02a5b;
   --ccar-ink: #0b0b0b;
   --ccar-tooltip-bg: #1a1a19;
   --ccar-tooltip-ink: #ffffff;
+  --ccar-hl: rgba(83, 25, 231, 0.09);   // code-tour line highlight, a wash of --ccar-d1
 }
 
 @import "_shared";

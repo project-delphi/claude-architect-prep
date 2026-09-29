@@ -169,3 +169,59 @@ figure figcaption {
   .ccar-delta__tip { left: 0; white-space: normal; }
   .ccar-delta__axis { margin-left: 5.75rem; margin-right: 4.35rem; }
 }
+
+// ---------------------------------------------------------------------------
+// Code tour (domains/01-code-tour.qmd). Each stop sets its notes beside the
+// code slice they describe on wide screens and stacks them below that. Line
+// highlights are emitted per listing at render time and resolve through
+// --ccar-hl, which each scheme defines.
+// ---------------------------------------------------------------------------
+.ccar-stop {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.5rem 2rem;
+  margin-bottom: 2.5rem;
+}
+
+// Grid children default to min-width: auto, which lets a long code line
+// widen the whole page; zero keeps the overflow inside the listing's scroller.
+.ccar-stop > * { min-width: 0; }
+
+@media (min-width: 1200px) {
+  .ccar-stop {
+    grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.ccar-stop__notes > :first-child { margin-top: 0; }
+.ccar-stop__notes .callout { margin: 1rem 0; }
+
+.ccar-stop__lines {
+  display: inline-block;
+  font-family: var(--bs-font-monospace);
+  font-size: 0.8rem;
+  color: var(--ccar-neutral);
+  margin-bottom: 0.25rem;
+}
+
+.ccar-src div.sourceCode { margin-top: 0; margin-bottom: 0.35rem; }
+.ccar-src pre.sourceCode { font-size: 0.8rem; }
+
+// A highlighted line spans the listing's full scroll width, not just its text.
+.ccar-src pre > code.sourceCode > span {
+  display: inline-block;
+  min-width: 100%;
+}
+
+.ccar-files td:first-child,
+.ccar-files td:first-child code {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.ccar-src-link {
+  font-size: 0.78rem;
+  color: var(--ccar-neutral);
+}

@@ -10,8 +10,8 @@ dependencies = [
 
 [dependency-groups]
 dev = []
-# Rendering the Quarto site: one executable cell slices dispatch_stop_reason()
-# out of orchestrator.py so the listing cannot drift from the code that runs.
+# Rendering the Quarto site: executable cells slice listings out of
+# 01-agentic-loops/*.py so they cannot drift from the code that runs.
 docs = ["jupyter>=1.0"]
 
 [tool.uv]

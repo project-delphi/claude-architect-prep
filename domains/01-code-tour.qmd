@@ -1,0 +1,768 @@
+---
+title: "Domain 1 code tour"
+subtitle: "A guided read of `01-agentic-loops/`, with notes beside the code they describe"
+description: "21 stops through orchestrator.py, hub_and_spoke.py and task_decomposition.py, with exam angles, open questions and a self-test."
+page-layout: full
+toc-location: left
+toc-expand: true
+code-overflow: scroll
+---
+
+```{python}
+#| echo: false
+# Every listing on this page is sliced out of the real files at render time, so
+# the code shown is always the code that runs. The notes are prose and can't
+# follow edits on their own: when a file's hash no longer matches the one they
+# were written against, its section says so instead of silently misleading.
+import hashlib
+import subprocess
+import sys
+from pathlib import Path
+
+SRC = Path("../01-agentic-loops")
+BLOB = "https://github.com/project-delphi/claude-architect-prep/blob/main/01-agentic-loops/"
+WRITTEN_AT = "0566abe"
+WRITTEN_AGAINST = {
+    "orchestrator.py": "b6f93b87ce23f902db6aa7b065f412e878f77a73798f2861b47bd6ff013c6dee",
+    "hub_and_spoke.py": "46ade4bb003200ef9ec340dbed75c41a42f3791a57d202705a672add3b118601",
+    "task_decomposition.py": "2c44f440271febd94c54b27df9e2894224c1cad7eb8726f6dec40f06a88567dd",
+}
+
+
+def drift(name: str) -> None:
+    now = hashlib.sha256((SRC / name).read_bytes()).hexdigest()
+    if now != WRITTEN_AGAINST[name]:
+        print('::: {.callout-important title="This file has changed since the tour was written"}')
+        print(f"The listings below are the current `{name}`, but the notes were written "
+              f"against commit `{WRITTEN_AT}`. Line references in the notes may be off.")
+        print(":::")
+
+
+def _lines(spec: str) -> set[int]:
+    out: set[int] = set()
+    for part in filter(None, spec.split(",")):
+        a, _, b = part.partition("-")
+        out.update(range(int(a), int(b or a) + 1))
+    return out
+
+
+def show(name: str, start: int, end: int, hl: str = "") -> None:
+    """Print lines start..end of a source file as a numbered listing."""
+    src = (SRC / name).read_text().splitlines()
+    while start < end and not src[start - 1].strip():
+        start += 1
+    while end > start and not src[end - 1].strip():
+        end -= 1
+    block = f"src-{Path(name).stem.replace('_', '-')}-{start}"
+    print(f"::: {{#{block} .ccar-src}}")
+    print(f'````{{.python .numberLines startFrom="{start}"}}')
+    print("\n".join(src[start - 1:end]))
+    print("````")
+    print(":::")
+    marks = [n - start + 1 for n in sorted(_lines(hl)) if start <= n <= end]
+    if marks:
+        sel = ", ".join(f"#{block} code > span:nth-child({k})" for k in marks)
+        print("```{=html}")
+        print(f"<style>{sel} {{ background: var(--ccar-hl); }}</style>")
+        print("```")
+    print(f"\n[`{name}` L{start}–{end} on GitHub]({BLOB}{name}#L{start}-L{end}){{.ccar-src-link}}\n")
+
+
+def run(name: str, *args: str) -> None:
+    """Run a script and print its real output, so the page can't show stale output."""
+    out = subprocess.run([sys.executable, str(SRC / name), *args],
+                         capture_output=True, text=True, check=True).stdout
+    print("````{.text}")
+    print(out.rstrip())
+    print("````")
+```
+
+Three Python files, 956 lines, in 21 stops. Each stop puts notes beside the exact lines they describe, and every listing is sliced from the real files when the site is built. Use the contents list to jump between stops.
+
+## The folder in one screen
+
+Domain 1 (Agentic Architecture & Orchestration) is 27% of the exam. The folder holds one careful implementation and two short teaching sketches. None of them needs an API key to run.
+
+::: {.ccar-files}
+| File | Task statement | Lines | What it is |
+|----------|------|---:|------------------------------|
+| [`orchestrator.py`](#orchestrator) | TS 1.1 | 722 | A real agent loop against the Messages API. The loop's next move is decided only by `stop_reason`, and every stop reason is handled by name. Ships with an offline self-check. |
+| [`hub_and_spoke.py`](#hub) | TS 1.2, 1.3 | 139 | A coordinator and three subagents, simulated with plain functions. Subagents talk only to the coordinator, and context moves between them only through it. |
+| [`task_decomposition.py`](#decomp) | TS 1.6 | 95 | A fixed pipeline next to an adaptive worklist whose steps can add new steps. Running it shows the plan growing from 1 step to 4. |
+:::
+
+How they connect: `orchestrator.py` is the engine. Its `delegate_subtask` tool is a stub, and that stub is exactly where the hub-and-spoke pattern would plug in. Task decomposition is how the coordinator decides what to delegate in the first place.
+
+The stops follow task-statement order: the loop first, then coordination, then decomposition. If you'd rather warm up, the two short files take about ten minutes together.
+
+### Run them yourself
+
+``` bash
+uv run 01-agentic-loops/orchestrator.py --self-check
+python3 01-agentic-loops/hub_and_spoke.py
+python3 01-agentic-loops/task_decomposition.py
+```
+
+### Things worth questioning
+
+Reading closely turns up a few things. None of them breaks the offline runs, but each makes a good "what goes wrong if…" exam prompt. Details are at each stop.
+
+- [The loop](#o9): if a reply is cut off at `max_tokens` in the middle of a tool call, the continuation request is rejected.
+- [Calling the API](#o8): the hand-written retry loop runs on top of the SDK's own retries, so one 429 can turn into 15 attempts.
+- [System prompt](#o7): the cache breakpoint covers tools and system prompt only, so the growing history is billed in full every turn.
+- [Self-check](#o10): prints "19 assertions" but runs 23 checks.
+- [Coordinator](#h3): the order is hardcoded, and `is_retryable` is reported but never acted on.
+- [Adaptive plan](#d3): no cycle guard, and [one discovered module is never tested](#d4).
+
+## orchestrator.py {#orchestrator}
+
+```{python}
+#| echo: false
+#| output: asis
+drift("orchestrator.py")
+```
+
+TS 1.1 · 722 lines · 11 stops. A manual orchestrator-worker loop, organized in six numbered sections that the stops follow in order. The one function to know cold is [`dispatch_stop_reason`](#o3), and the one loop to be able to write from memory is [`run`](#o9).
+
+### Stop 1 · The thesis {#o1}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L1–32]{.ccar-stop__lines}
+
+The docstring states the job: a loop that continues while `stop_reason` is `"tool_use"` and ends on `"end_turn"`.
+
+It explains why it skips the SDK's tool runner. The runner is the right default in production, but it hides the per-turn `stop_reason` check, and that check is what TS 1.1 tests.
+
+Then it lists the three anti-patterns from the task statement and how the file avoids each one.
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+Learn the three anti-patterns (highlighted). They appear as wrong answer choices: reading the reply text for "done", using an iteration cap as the stop signal, and treating a text block as completion.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 1, 32, hl="18-25")
+```
+:::
+::::
+
+### Stop 2 · Config and the Action enum {#o2}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L33–82]{.ccar-stop__lines}
+
+Model settings, then four bounds. `MAX_TURNS` is a runaway guard, not the way the loop stops. The other three cap specific chains: pause resumes, `max_tokens` continuations, and API retries.
+
+`Action` has six members, one per outcome. The loop never branches on `stop_reason` directly. It branches on an `Action`, which is what lets the mapping be tested on its own.
+
+**Look at**
+
+- L54–57: on Opus 5, `budget_tokens`, `temperature`/`top_p`/`top_k`, and assistant prefill are all 400 errors. Thinking depth is set with `effort` instead (L61).
+- `claude-opus-5` is still a valid model. The current Opus is `claude-opus-5-5`, whose default effort is `medium`. This file sets effort explicitly, so switching wouldn't silently change it.
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+Every bound in this file raises when hit. None of them is a normal exit.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 33, 82, hl="63")
+```
+:::
+::::
+
+### Stop 3 · `dispatch_stop_reason` {#o3}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L83–125]{.ccar-stop__lines}
+
+The heart of TS 1.1. It maps each `stop_reason` to an `Action`. It reads nothing else, except `stop_details` on a refusal. No client, no I/O, and it never looks at the reply text.
+
+**Look at**
+
+- L111–118: `stop_details` is filled in only when the reason is `"refusal"`, and is null otherwise. So it's read inside that branch, with `getattr` defaults so a refusal without details can't crash.
+- L120–123: an unknown reason raises. The API can add new stop reasons; quietly treating one as "finished" would hide the bug.
+- L87 and L124: the `docs:start`/`docs:end` markers let the [Domain 1 page](01-agentic-loops.qmd) slice this function live.
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+How does the loop know it's finished? `stop_reason == "end_turn"`. Any answer that inspects the reply's words is a distractor.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 83, 125, hl="111-118,120-123")
+```
+:::
+::::
+
+### Stop 4 · Tool definitions {#o4}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L126–212]{.ccar-stop__lines}
+
+Two tools. `delegate_subtask` hands a unit of work to a worker role. `record_finding` stores a conclusion with its evidence and source.
+
+**Look at**
+
+- Each description gives purpose, input, output, and when *not* to use it (L149–150, L186). Each tool points to the other for the case it doesn't cover. TS 2.1: descriptions are how the model chooses a tool.
+- L144–145 and L168–169: workers don't inherit the conversation, so `context` must restate every fact. This is TS 1.3's core rule.
+- `strict: True`, `additionalProperties: False`, and every property listed in `required` (TS 4.3). That guarantees the input matches the schema. It doesn't guarantee the values make sense.
+- `enum` on `worker` and `confidence` limits them to known values.
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+"Subagents don't see the coordinator's history" is the most likely TS 1.3 question. The fix is always to pass the context explicitly.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 126, 212, hl="144-145,152,173-174")
+```
+:::
+::::
+
+### Stop 5 · Structured failures and the registry {#o5}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L213–287]{.ccar-stop__lines}
+
+`ToolFailure` carries a category (transient, validation, permission, business) and a retryable flag, and serializes them as JSON the model can read. `WorkerRegistry` maps tool names to handlers and keeps the findings list.
+
+**Look at**
+
+- L260–268: empty context is a *validation* error marked retryable, because a corrected call can succeed. Retryable here means "retry with a fix", not "send the same thing again".
+- L270–279: `delegate_subtask` is a stub. This is the seam where [`hub_and_spoke.py`](#hub)'s pattern would plug in (issue #2).
+- L281–285: `record_finding` keeps claim, evidence and source together so attribution survives into the final answer (TS 5.6).
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+TS 2.2: a bare "Operation failed" gives the agent nothing to decide with. Category plus retryability lets it choose between retrying, rephrasing and escalating.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 213, 287, hl="260-268")
+```
+:::
+::::
+
+### Stop 6 · Executing tool calls {#o6}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L288–343]{.ccar-stop__lines}
+
+Takes every `tool_use` block from one assistant message and returns exactly one `tool_result` per block, in the same order, with matching ids.
+
+**Look at**
+
+- L311–319: an unknown tool name still gets a result, flagged `is_error`. Dropping it would leave a `tool_use` unmatched, and the API would reject the next request.
+- L324–326: input is treated as parsed data, never string-matched. Opus 5 can vary JSON escaping.
+- L331–338: any other exception becomes a transient, retryable error. A buggy worker can't crash the loop.
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+All results go back in **one** user message (the caller does this at L509–512). Splitting them across messages teaches the model to stop making parallel calls.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 288, 343, hl="311-319")
+```
+:::
+::::
+
+### Stop 7 · Client and system prompt {#o7}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L344–375]{.ccar-stop__lines}
+
+`build_client()` uses a bare constructor. The SDK finds credentials itself: `ANTHROPIC_API_KEY`, then `ANTHROPIC_AUTH_TOKEN`, then an `ant auth login` profile.
+
+The system prompt tells the model how to orchestrate and carries a `cache_control` breakpoint (TS 5.1).
+
+**Look at**
+
+- L372: requests are assembled as tools, then system, then messages. A breakpoint on the system block caches the tool definitions plus the system prompt. Opus 5 caches prefixes from 512 tokens up, which this should clear.
+
+::: {.callout-warning appearance="simple" title="Worth questioning"}
+The message history grows every turn and sits after the breakpoint, so it's billed at full price each time. A long loop would also want the conversation cached, for example with top-level `cache_control` on `messages.create`.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 344, 375, hl="372")
+```
+:::
+::::
+
+### Stop 8 · Calling the API {#o8}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L376–457]{.ccar-stop__lines}
+
+One request, wrapped in `except` clauses ordered most specific first. 404, 401, 403 and 400 raise at once: the request needs fixing, not the timing. 429 waits for `retry-after`. Other 4xx raise. 5xx, timeouts and connection errors back off with jitter.
+
+**Look at**
+
+- L418–422: `APIStatusError` is the parent of the specific classes above it, so it has to come after them. Python checks `except` clauses top to bottom.
+- L434–436: jitter keeps many clients from retrying in lockstep.
+
+::: {.callout-warning appearance="simple" title="Worth questioning"}
+The Anthropic SDK already retries 429, 5xx and connection errors twice by default, and honors `retry-after` itself. With this loop on top, a persistent 429 can be tried 15 times (5 loop attempts × 3 SDK tries). Build the client with `max_retries=0`, or drop the hand-written loop.
+:::
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+One broad `except` erases the difference between failures worth retrying and failures that need a different request.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 376, 457, hl="418-422")
+```
+:::
+::::
+
+### Stop 9 · The loop {#o9}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L458–546]{.ccar-stop__lines}
+
+`run()` is the whole agent. Send the messages, turn the response into an `Action`, act on it, repeat. Six branches, one per `Action`.
+
+**Look at**
+
+- L494–504: three ways to finish. A refusal returns empty text with `refused=True` and is not retried.
+- L506–513: tool use. Append the whole assistant content (thinking blocks included), then one user message holding every result.
+- L515–523: `pause_turn`. Append the paused assistant turn and send again with no new user message. The server picks the turn back up.
+- L525–534: `max_tokens`. Append the partial turn and ask it to continue, at most three times.
+- L536–541: falling out of the `for` loop raises. Hitting the turn cap is a failure, never an exit.
+
+::: {.callout-warning appearance="simple" title="Worth questioning"}
+If a reply is cut off at `max_tokens` partway through a tool call, the appended content ends with an incomplete `tool_use` block and no matching `tool_result`. The next request is rejected with a 400, which surfaces here as "Malformed request". The usual fix: if the last block is a `tool_use`, retry the turn with a larger `max_tokens` instead of asking it to continue.
+:::
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+This is the canonical agent loop. Be able to write it from memory.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 458, 546, hl="525-534")
+```
+:::
+::::
+
+### Stop 10 · Offline self-check {#o10}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L547–660]{.ccar-stop__lines}
+
+Small fake classes (`_Response`, `_Block`, `_Details`) stand in for SDK objects, so the checks run with no API key. They cover every stop reason, refusal with and without details, the unknown-reason raise, parallel results, error flagging, and strict schemas.
+
+**Look at**
+
+- L574: the logger is silenced because the refusal cases log at ERROR on purpose. Anything that reaches stderr during a self-check is then a real problem.
+
+**Output, from this build**
+
+```{python}
+#| echo: false
+#| output: asis
+run("orchestrator.py", "--self-check")
+```
+
+::: {.callout-warning appearance="simple" title="Worth questioning"}
+L655 prints "19 assertions", but the function runs 23 checks. The number is hardcoded and has drifted. Counting the checks as they run would keep it honest.
+:::
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+Keeping control flow in pure functions is what makes agent behavior testable without a model.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 547, 660, hl="655")
+```
+:::
+::::
+
+### Stop 11 · CLI entry point {#o11}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L661–722]{.ccar-stop__lines}
+
+Three mutually exclusive modes: `--task` runs live, `--self-check` runs offline, and `--check-client` builds a client and reports where credentials came from without sending a request.
+
+Exit codes: 0 for success, 1 for an orchestrator error, 2 for a refusal.
+
+**Look at**
+
+- L714–715: the run summary prints turns, findings and cached input tokens, so a zero cache-hit rate is visible after every run.
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("orchestrator.py", 661, 722, hl="684-689")
+```
+:::
+::::
+
+## hub_and_spoke.py {#hub}
+
+```{python}
+#| echo: false
+#| output: asis
+drift("hub_and_spoke.py")
+```
+
+TS 1.2 · TS 1.3 · 139 lines · 5 stops. A teaching sketch, deliberately simpler than `orchestrator.py`. Plain functions play the subagents so you can see the shape in a few minutes.
+
+### Stop 1 · The rule {#h1}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L1–27]{.ccar-stop__lines}
+
+Subagents return results only to the coordinator. They never call each other, never see each other's raw output, and never share state.
+
+The file enforces this through structure. There is no code path from one subagent to another, so the rule can't be broken by accident.
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+TS 1.2: in hub-and-spoke, all information between agents flows through the coordinator. That gives one place for observability, error handling and routing.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("hub_and_spoke.py", 1, 27, hl="6-10")
+```
+:::
+::::
+
+### Stop 2 · Result type and subagents {#h2}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L28–58]{.ccar-stop__lines}
+
+`SubagentResult` is the one shape every subagent returns: `ok`, `output`, and on failure an `error_category` and `is_retryable`. Same idea as `ToolFailure` in [`orchestrator.py`](#o5).
+
+Each subagent reads only the `context` dict it is handed. The verifier needs `research_findings`; the summarizer needs `verified_findings`. If the input is missing, it fails with `missing_dependency`.
+
+**Look at**
+
+- L46 and L53: subagents don't go looking for what they need. They receive it or they fail.
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+TS 1.3: subagents don't inherit context. The coordinator passes everything explicitly.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("hub_and_spoke.py", 28, 58, hl="46,53")
+```
+:::
+::::
+
+### Stop 3 · The coordinator {#h3}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L59–94]{.ccar-stop__lines}
+
+`dispatch()` looks up a subagent, calls it, appends the result to a transcript, and logs failures. `run()` calls researcher, verifier and summarizer in turn, copying each output into the context for the next one.
+
+**Look at**
+
+- L83 and L88: these two lines are the only way information moves between subagents.
+- L66–68: an unknown subagent name becomes a structured failure, like an unknown tool in [`orchestrator.py`](#o6).
+
+::: {.callout-warning appearance="simple" title="Worth questioning"}
+`run()` hardcodes the order, so this coordinator is really a fixed pipeline. In the real pattern the coordinator is a Claude session choosing which subagent to call next. Also, `is_retryable` is printed but nothing retries; a fuller coordinator would retry or re-route on retryable failures.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("hub_and_spoke.py", 59, 94, hl="83,88")
+```
+:::
+::::
+
+### Stop 4 · Running it {#h4}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L95–120]{.ccar-stop__lines}
+
+Run 1 is the happy path. Run 2 calls the verifier directly with an empty context to show a caught, categorized failure.
+
+The second coordinator (L108) is built exactly like the first. The failure comes from calling `dispatch` directly at L113 and skipping `run()`.
+
+**Output, from this build**
+
+```{python}
+#| echo: false
+#| output: asis
+run("hub_and_spoke.py")
+```
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("hub_and_spoke.py", 95, 120, hl="113")
+```
+:::
+::::
+
+### Stop 5 · Mapping to the Agent SDK {#h5}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L121–139]{.ccar-stop__lines}
+
+A commented sketch of the real version. Each subagent becomes an `AgentDefinition` with a description and a prompt. The main Claude session is the coordinator.
+
+**Look at**
+
+- L129: the subagent-spawning tool has to be in `allowed_tools`, or no subagent can ever be invoked.
+- The `description` is how the coordinator picks a subagent, the same way tool descriptions work in [Stop 4](#o4).
+
+::: {.callout-warning appearance="simple" title="Worth questioning"}
+The sketch and the exam guide call that tool `Task`. Current Claude Code builds name it `Agent`. Check the name against the SDK version you install before relying on either.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("hub_and_spoke.py", 121, 139, hl="129")
+```
+:::
+::::
+
+## task_decomposition.py {#decomp}
+
+```{python}
+#| echo: false
+#| output: asis
+drift("task_decomposition.py")
+```
+
+TS 1.6 · 95 lines · 5 stops. Two ways to break up a job. The adaptive version is the interesting one: its plan at the end is not the plan it started with.
+
+### Stop 1 · Two shapes {#d1}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L1–22]{.ccar-stop__lines}
+
+A fixed pipeline runs the same steps in the same order every time. An adaptive plan starts from one step, and any step can add more based on what it finds.
+
+::: {.callout-tip appearance="simple" title="Exam angle"}
+TS 1.6: fixed prompt chaining suits predictable, repeatable work. Adaptive decomposition suits open-ended investigation where the steps can't be known in advance.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("task_decomposition.py", 1, 22, hl="6-9")
+```
+:::
+::::
+
+### Stop 2 · The fixed pipeline {#d2}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L23–41]{.ccar-stop__lines}
+
+One local pass per file, then one integration pass over all the local notes.
+
+**Look at**
+
+- L34–38: splitting a large review into per-file passes plus a cross-file pass is the standard fix for attention dilution. Each file gets focused attention, and cross-file issues get their own pass.
+
+::: {.callout-warning appearance="simple" title="Worth questioning"}
+Fixed plans fail quietly. A file missing from the list is never reviewed, and nothing reports it. This is the [README's open question on Sample Q7](01-agentic-loops.qmd#open-questions-for-the-sprint): a decomposition that's too narrow drops whole subtopics while every subagent reports success.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("task_decomposition.py", 23, 41, hl="34-38")
+```
+:::
+::::
+
+### Stop 3 · The adaptive plan {#d3}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L42–63]{.ccar-stop__lines}
+
+A worklist. `pending` is a queue of steps. `run()` takes the first step, runs it, and repeats until the queue is empty. Each step is handed the plan itself, so it can call `add_step`.
+
+**Look at**
+
+- L58: the loop runs while work remains, not for a fixed count. It's the same idea as `stop_reason` in the orchestrator: the work decides when it's done.
+
+::: {.callout-warning appearance="simple" title="Worth questioning"}
+There's no dedup and no cap. If two modules depended on each other, each test would queue the other and the loop would never end. A real version needs a visited set, or a bound that raises like `MAX_TURNS`.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("task_decomposition.py", 42, 63, hl="58-59")
+```
+:::
+::::
+
+### Stop 4 · Steps that grow the plan {#d4}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L64–83]{.ccar-stop__lines}
+
+`map_structure` finds the modules and queues tests. `test_module` on billing finds a dependency that wasn't in the original map and queues a test for it.
+
+**Look at**
+
+- L73–75: new work found mid-task goes straight onto the plan. That growth is the whole concept.
+
+::: {.callout-warning appearance="simple" title="Worth questioning"}
+`map_structure` finds three modules (L66) but queues tests for only two. `notifications` is never tested, and nothing notices. Adaptive plans can drop work too. A final check of findings against the discovered structure would catch it.
+:::
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("task_decomposition.py", 64, 83, hl="66-68,73-75")
+```
+:::
+::::
+
+### Stop 5 · Running it {#d5}
+
+:::: {.ccar-stop}
+::: {.ccar-stop__notes}
+[L84–95]{.ccar-stop__lines}
+
+Watch the `pending` count in the adaptive run: 0, 1, 1, 0. The plan started with one step and finished with four. That number couldn't be known before `map_structure` ran.
+
+**Output, from this build**
+
+```{python}
+#| echo: false
+#| output: asis
+run("task_decomposition.py")
+```
+:::
+
+::: {.ccar-stop__code}
+```{python}
+#| echo: false
+#| output: asis
+show("task_decomposition.py", 84, 95)
+```
+:::
+::::
+
+## Self-test {#selftest}
+
+Try each one before opening it.
+
+::: {.callout-note collapse="true" appearance="simple" title="The loop receives `stop_reason` `\"pause_turn\"`. What does it send next?"}
+The same messages with the paused assistant turn appended, and no new user message. The server resumes the turn. This can happen at most five times (`MAX_PAUSE_RESUMES`) before the loop raises. *See [Stop 9](#o9), L515–523.*
+:::
+
+::: {.callout-note collapse="true" appearance="simple" title="Why does hitting `MAX_TURNS` raise instead of returning the last reply?"}
+An iteration cap must never be the main stopping mechanism. Reaching it means something is wrong, such as a runaway loop or a missing `end_turn`. Returning partial output would hide that. *See [Stop 9](#o9), L536–541.*
+:::
+
+::: {.callout-note collapse="true" appearance="simple" title="One assistant message has three `tool_use` blocks and the second one throws. What goes back to the API?"}
+One user message with three `tool_result` blocks, in order, with matching ids. The second has `is_error: true` and a JSON payload with `errorCategory` and `isRetryable`. *See [Stop 6](#o6) and L509–512.*
+:::
+
+::: {.callout-note collapse="true" appearance="simple" title="Why is `dispatch_stop_reason` a pure function?"}
+So the termination logic can be tested without a client or network, which is what the self-check does with fake responses. It also makes the rule easy to audit: only `stop_reason` decides. *See [Stop 3](#o3) and [Stop 10](#o10).*
+:::
+
+::: {.callout-note collapse="true" appearance="simple" title="When is it safe to read `stop_details`?"}
+Only when `stop_reason` is `"refusal"`. It's null for every other reason, so the code reads it inside that branch and with `getattr` defaults. *See [Stop 3](#o3), L111–118.*
+:::
+
+::: {.callout-note collapse="true" appearance="simple" title="In `hub_and_spoke.py`, how does the verifier learn what the researcher found?"}
+The coordinator copies the researcher's output into the `context` dict and passes that dict to the verifier. There's no other channel. *See [Stop 3](#h3), L83.*
+:::
+
+::: {.callout-note collapse="true" appearance="simple" title="A workflow's steps are well known and rarely change. Fixed pipeline or adaptive plan?"}
+Fixed. It's cheaper, predictable and easy to test. Reach for adaptive decomposition when later steps depend on what earlier steps discover. *See [Stop 1](#d1).*
+:::
+
+::: {.callout-note collapse="true" appearance="simple" title="Why not use `client.beta.messages.tool_runner` here?"}
+In production you usually would. It hides the per-turn `stop_reason` check that TS 1.1 tests, so this study file writes the loop by hand. *See [Stop 1](#o1), L8–14.*
+:::
+
+------------------------------------------------------------------------
+
+[Back to Domain 1](01-agentic-loops.qmd) · [Browse `01-agentic-loops/` on GitHub](https://github.com/project-delphi/claude-architect-prep/tree/main/01-agentic-loops)

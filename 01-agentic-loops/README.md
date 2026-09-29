@@ -85,3 +85,33 @@ labelled in the source:
 - [ ] Coordinator decomposition failure mode (Sample Q7): overly narrow
       decomposition silently drops whole subtopics while every subagent
       "succeeds".
+
+## Reference scaffolds added 2026-09-14 (teaching versions, complementary to orchestrator.py)
+
+Two more files here, written as runnable teaching references for TS 1.2/1.3
+and TS 1.6 — simpler than orchestrator.py's rigor above, meant to make the
+shape of each pattern visible in a few minutes rather than be the final
+implementation.
+
+### `hub_and_spoke.py` — TS 1.2 / TS 1.3 (issue #2)
+
+A `Coordinator` dispatches to subagent functions; subagents report only to
+the coordinator, never to each other. Demonstrates a caught failure
+(`error_category`/`is_retryable`) when a subagent is invoked out of order.
+Still open: wiring this to real Task-tool subagent calls via the Agent SDK
+(`ClaudeAgentOptions.agents`, `allowed_tools` incl. `"Task"` — sketched at
+the bottom of the file, not runnable).
+
+```bash
+python3 01-agentic-loops/hub_and_spoke.py
+```
+
+### `task_decomposition.py` — TS 1.6 (issue #15)
+
+`fixed_pipeline()` vs `adaptive_plan()` — the adaptive version is a worklist
+that steps are allowed to append to; running it prints the step count
+growing live as `map_structure` and `test_module` discover new work.
+
+```bash
+python3 01-agentic-loops/task_decomposition.py
+```
