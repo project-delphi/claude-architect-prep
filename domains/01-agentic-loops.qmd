@@ -4,6 +4,10 @@ pagetitle: "Domain 1 — Agentic Architecture & Orchestration"
 
 {{< include /01-agentic-loops/README.md >}}
 
+::: {.callout-tip title="Reading the code?"}
+The [Domain 1 code tour](01-code-tour.qmd) walks all three files in 21 stops, with notes beside the exact lines they describe and a self-test at the end.
+:::
+
 ------------------------------------------------------------------------
 
 ## The termination logic, in full

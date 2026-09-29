@@ -15,7 +15,7 @@ on:
       - "pyproject.toml"
       - "uv.lock"
       - "0*/README.md"
-      - "01-agentic-loops/orchestrator.py"
+      - "01-agentic-loops/*.py"
       - ".github/workflows/publish.yml"
   workflow_dispatch:
 
@@ -49,8 +49,9 @@ jobs:
         with:
           enable-cache: true
 
-      # The one executable cell on the site slices dispatch_stop_reason() out of
-      # orchestrator.py at render time, so the render needs a Jupyter kernel.
+      # Executable cells slice listings out of 01-agentic-loops/*.py at render
+      # time (and the code tour runs those scripts for their output), so the
+      # render needs a Jupyter kernel and the project's own dependencies.
       - run: uv sync --group docs
 
       - run: uv run quarto render

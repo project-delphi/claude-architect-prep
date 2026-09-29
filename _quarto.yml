@@ -34,6 +34,8 @@ website:
         menu:
           - href: domains/01-agentic-loops.qmd
             text: "1 — Agentic loops (27%)"
+          - href: domains/01-code-tour.qmd
+            text: "1 — Code tour"
           - href: domains/02-mcp-servers.qmd
             text: "2 — Tool design & MCP (18%)"
           - href: domains/03-claude-code.qmd
